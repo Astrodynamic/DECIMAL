@@ -17,13 +17,13 @@ public:
   };
 
   explicit Decimal(const std::string_view& value = {});
-  // explicit Decimal(const Decimal&) = default;
-  // explicit Decimal(Decimal&&) noexcept = default;
-  // ~Decimal() = default;
+  explicit Decimal(const Decimal&) = default;
+  explicit Decimal(Decimal&&) noexcept = default;
+  ~Decimal() = default;
 
-  // auto operator=(const Decimal&) -> Decimal& = default;
-  // auto operator=(Decimal&&) noexcept -> Decimal& = default;
   auto operator=(const std::string_view& value) -> Decimal&;
+  auto operator=(const Decimal&) -> Decimal& = default;
+  auto operator=(Decimal&&) noexcept -> Decimal& = default;
 
   // [[nodiscard]] auto operator<(const Decimal& other) const noexcept -> bool;
   // [[nodiscard]] auto operator>(const Decimal& other) const noexcept -> bool;
