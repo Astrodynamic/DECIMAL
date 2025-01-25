@@ -38,7 +38,7 @@ public:
   // [[nodiscard]] auto operator/(const Decimal& other) const noexcept -> Decimal;
   // [[nodiscard]] auto operator%(const Decimal& other) const noexcept -> Decimal;
 
-  // auto operator-() const noexcept -> Decimal;
+  auto operator-() noexcept -> Decimal&;
   // auto operator+=(const Decimal& other) noexcept -> Decimal&;
   // auto operator-=(const Decimal& other) noexcept -> Decimal&;
   // auto operator*=(const Decimal& other) noexcept -> Decimal&;

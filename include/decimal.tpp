@@ -15,6 +15,11 @@ template <std::size_t mantissa> auto Decimal<mantissa>::operator=(const std::str
   return *this;
 }
 
+template <std::size_t mantissa> auto Decimal<mantissa>::operator-() noexcept -> Decimal& {
+  m_mantissa.flip(mantissa);
+  return *this;
+}
+
 template <std::size_t mantissa> auto Decimal<mantissa>::parse(const std::string_view& value) const -> std::optional<std::cmatch> {
   std::cmatch match;
   if (std::regex_match(value.begin(), value.end(), match, m_mask)) {
@@ -42,6 +47,7 @@ template <std::size_t mantissa> auto Decimal<mantissa>::conversion(const std::cm
     }
     temp.erase(0, temp.find_first_not_of('0'));
     number = temp;
+    temp.clear();
   }
 }
 
