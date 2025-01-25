@@ -10,7 +10,7 @@ set(HEADERS
 )
 
 set(SOURCES
-  src/decimal.cc
+  source/decimal.cc
 )
 
 set(PROJECT_RESOURCES
