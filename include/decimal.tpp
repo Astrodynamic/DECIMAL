@@ -2,7 +2,6 @@
 #include <bitset>
 #include <cstddef>
 #include <string_view>
-#include <cstdint>
 
 namespace utils::finantial {
 template <std::size_t bits> Decimal<bits>::Decimal(const std::string_view& value) {
