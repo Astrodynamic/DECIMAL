@@ -83,8 +83,9 @@ template <std::size_t bits> auto Decimal<bits>::operator-=(const Decimal& other)
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator*=(const Decimal& other) noexcept -> Decimal& {
-  Decimal a(*this), b(other);
-  normalize(b);
+  this->m_exponent = this->m_exponent + other.m_exponent;
+  this->m_mantissa = this->m_mantissa * other.m_mantissa;
+  fit();
   return *this;
 }
 
