@@ -173,6 +173,28 @@ template <std::size_t bits> auto Decimal<bits>::trunc() const noexcept -> Decima
   return result;
 }
 
+template <std::size_t bits> auto Decimal<bits>::round() const noexcept -> Decimal {
+
+}
+
+template <std::size_t bits> auto Decimal<bits>::floor() const noexcept -> Decimal {
+  Decimal result(*this);
+  if (!result.m_mantissa[result.m_bits - 1]) {
+    return result.trunc();
+  }
+  result = result - Decimal("1");
+  return result.trunc();
+}
+
+template <std::size_t bits> auto Decimal<bits>::ceil() const noexcept -> Decimal {
+  Decimal result(*this);
+  if (result.m_mantissa[result.m_bits - 1]) {
+    return result.trunc();
+  }
+  result = result + Decimal("1");
+  return result.trunc();
+}
+
 template <std::size_t bits> auto Decimal<bits>::parse(const std::string_view& value) const -> std::optional<std::cmatch> {
   std::cmatch match;
   if (std::regex_match(value.begin(), value.end(), match, m_mask)) {
