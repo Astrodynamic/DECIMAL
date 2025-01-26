@@ -13,6 +13,21 @@ TEST(Decimal, ConstructorDefault) {
   EXPECT_EQ(static_cast<std::string>(Decimal("-.80324809283904824342323423434432424243245")), "-0.8032480928390482434232342343");
 }
 
+TEST(Decimal, ConstructorCopy) {
+  Decimal a;
+  Decimal b (a);
+  EXPECT_EQ(static_cast<std::string>(b), "+0");
+
+  Decimal c("-.005");
+  Decimal d(c);
+
+  EXPECT_EQ(static_cast<std::string>(d), "-0.005");
+}
+
+TEST(Decimal, ConstructorMove) {
+
+}
+
 // START_TEST(castom_add_1) {
 //   castom_decimal src1, src2, origin, result;
 //   int value_type_result, value_type_origin;
