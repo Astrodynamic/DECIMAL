@@ -17,7 +17,10 @@ template <std::size_t bits> auto Decimal<bits>::operator=(const std::string_view
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator<(const Decimal& other) const noexcept -> bool {
-  return true;
+  Decimal a(this->m_mantissa[m_bits - 1] ? -*this : *this);
+  Decimal b(other.m_mantissa[other.m_bits - 1] ? -other : other);
+  a.normalize(b);
+  return a.m_mantissa < b.m_mantissa;
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator>(const Decimal& other) const noexcept -> bool {
@@ -37,7 +40,9 @@ template <std::size_t bits> auto Decimal<bits>::operator==(const Decimal& other)
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator!=(const Decimal& other) const noexcept -> bool {
-  return true;
+  Decimal a(*this), b(other);
+  a.normalize(b);
+  return a.m_mantissa != b.m_mantissa;
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator-() const noexcept -> Decimal {
