@@ -190,8 +190,39 @@ template <std::size_t bits> auto Decimal<bits>::fit() -> void {
   if (negative) m_mantissa = -m_mantissa;
 }
 
-template <std::size_t bits> auto operator<<(std::ostream& os, const Decimal<bits>& decimal) -> std::ostream& {
-  return os << decimal.m_mantissa.to_string();
+template <std::size_t bits> auto operator<<(std::ostream& os, Decimal<bits> decimal) -> std::ostream& {
+  bool negative = decimal.m_mantissa[bits - 1];
+  if (negative) {
+    decimal.m_mantissa = -decimal.m_mantissa;
+    os << "-";
+  } else {
+    os << "+";
+  }
+
+  std::size_t shift{1};
+  std::string number;
+  std::bitset<decimal.m_bits> rest;
+  while (decimal.m_mantissa.any()) {
+    if (decimal.m_exponent == shift && shift > 1) {
+      number += '.';
+    }
+    rest = decimal.m_mantissa % std::bitset<decimal.m_bits>(0b1010);
+    decimal.m_mantissa = decimal.m_mantissa / std::bitset<decimal.m_bits>(0b1010);
+    number += rest.to_ulong() + '0';
+    rest.reset();
+    ++shift;
+  }
+
+  if (decimal.m_exponent == shift && shift > 1) {
+    number += '.';
+  }
+
+  if (shift <= decimal.m_exponent) {
+    number += '0';
+  }
+
+  std::reverse(number.begin(), number.end());
+  return os << number;
 }
 
 template <std::size_t bits> auto operator<(std::bitset<bits> a, std::bitset<bits> b) -> bool {
