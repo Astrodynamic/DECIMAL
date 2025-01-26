@@ -150,8 +150,11 @@ template <std::size_t bits> auto Decimal<bits>::normalize(Decimal& other) -> voi
 }
 
 template <std::size_t bits> auto Decimal<bits>::fit() -> void {
-  for (std::size_t i = m_bits - 2; i <= m_bits / 2 && m_exponent; --i, --m_exponent) {
-    m_mantissa = m_mantissa / std::bitset<m_bits>(0b1010);
+  for (std::size_t i = m_bits - 2; i <= m_bits / 2 && m_exponent; --i) {
+    if (m_mantissa[i]) {
+      m_mantissa = m_mantissa / std::bitset<m_bits>(0b1010);
+      --m_exponent;
+    }
   }
 }
 
@@ -189,7 +192,7 @@ template <std::size_t bits> auto operator-(std::bitset<bits> a, std::bitset<bits
 template <std::size_t bits> auto operator*(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits> {
   std::bitset<bits> result, one(0b1);
   while (b.any()) {
-    if ((result & one)[0]) {
+    if ((b & one)[0]) {
       result = result + a;
     }
     a <<= 1;
