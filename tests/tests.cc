@@ -25,7 +25,15 @@ TEST(Decimal, ConstructorCopy) {
 }
 
 TEST(Decimal, ConstructorMove) {
+  Decimal a;
+  Decimal b (std::move(a));
+  EXPECT_EQ(static_cast<std::string>(a), "+0");
+  EXPECT_EQ(static_cast<std::string>(b), "+0");
 
+  Decimal c("-.005");
+  Decimal d(std::move(c));
+  EXPECT_EQ(static_cast<std::string>(c), "-0.005");
+  EXPECT_EQ(static_cast<std::string>(d), "-0.005");
 }
 
 // START_TEST(castom_add_1) {
