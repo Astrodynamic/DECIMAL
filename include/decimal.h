@@ -43,8 +43,7 @@ public:
   template <std::size_t M>
   friend auto operator<<(std::ostream& os, Decimal<M> decimal) -> std::ostream&;
 
-  // explicit operator std::string() const noexcept;
-  // explicit operator bool() const noexcept;
+  explicit operator std::string() const noexcept;
 
   // [[nodiscard]] auto trunc() const noexcept -> Decimal;
   // [[nodiscard]] auto round() const noexcept -> Decimal;

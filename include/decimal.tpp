@@ -130,6 +130,40 @@ template <std::size_t bits> auto Decimal<bits>::operator%=(const Decimal& other)
   return *this;
 }
 
+template <std::size_t bits> Decimal<bits>::operator std::string() const noexcept {
+  std::bitset<m_bits> temp(this->m_mantissa[m_bits - 1] ? -this->m_mantissa : this->m_mantissa), rest;
+
+  std::string number;
+  std::size_t shift{1};
+  while (temp.any()) {
+    if (this->m_exponent == shift && shift > 1) {
+      number += '.';
+    }
+    rest = temp % std::bitset<m_bits>(0b1010);
+    temp = temp / std::bitset<m_bits>(0b1010);
+    number += rest.to_ulong() + '0';
+    rest.reset();
+    ++shift;
+  }
+
+  if (this->m_exponent == shift && shift > 1) {
+    number += '.';
+  }
+
+  if (shift <= this->m_exponent) {
+    number += '0';
+  }
+
+  if (this->m_mantissa[bits - 1]) {
+    number += '-';
+  } else {
+    number += '+';
+  }
+
+  std::reverse(number.begin(), number.end());
+  return number;
+}
+
 template <std::size_t bits> auto Decimal<bits>::parse(const std::string_view& value) const -> std::optional<std::cmatch> {
   std::cmatch match;
   if (std::regex_match(value.begin(), value.end(), match, m_mask)) {
@@ -191,38 +225,7 @@ template <std::size_t bits> auto Decimal<bits>::fit() -> void {
 }
 
 template <std::size_t bits> auto operator<<(std::ostream& os, Decimal<bits> decimal) -> std::ostream& {
-  bool negative = decimal.m_mantissa[bits - 1];
-  if (negative) {
-    decimal.m_mantissa = -decimal.m_mantissa;
-    os << "-";
-  } else {
-    os << "+";
-  }
-
-  std::size_t shift{1};
-  std::string number;
-  std::bitset<decimal.m_bits> rest;
-  while (decimal.m_mantissa.any()) {
-    if (decimal.m_exponent == shift && shift > 1) {
-      number += '.';
-    }
-    rest = decimal.m_mantissa % std::bitset<decimal.m_bits>(0b1010);
-    decimal.m_mantissa = decimal.m_mantissa / std::bitset<decimal.m_bits>(0b1010);
-    number += rest.to_ulong() + '0';
-    rest.reset();
-    ++shift;
-  }
-
-  if (decimal.m_exponent == shift && shift > 1) {
-    number += '.';
-  }
-
-  if (shift <= decimal.m_exponent) {
-    number += '0';
-  }
-
-  std::reverse(number.begin(), number.end());
-  return os << number;
+  return os << static_cast<std::string>(decimal);
 }
 
 template <std::size_t bits> auto operator<(std::bitset<bits> a, std::bitset<bits> b) -> bool {
