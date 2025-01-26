@@ -54,9 +54,8 @@ public:
 private:
   static inline const std::regex m_mask{R"(^([+-]?)(?:0*)(\d*)(?:\.(\d*))?$)"};
 
-  static constexpr std::size_t m_sign_bit = 1;
   static constexpr std::size_t m_min_exponent{};
-  static constexpr std::size_t m_bits = m_sign_bit + bits * 2;
+  static constexpr std::size_t m_bits = bits * 2 + 1;
   static constexpr std::size_t m_max_exponent = bits * 0.30102999566398119521373889472449 + 1;
 
   std::size_t m_exponent{};
@@ -64,15 +63,22 @@ private:
 
   [[nodiscard]] auto parse(const std::string_view& value) const -> std::optional<std::cmatch>;
   auto conversion(const std::cmatch& match) -> void;
-  auto normalize(Decimal& a, Decimal& b) -> void;
+  auto normalize(Decimal& other) -> void;
+  auto fit() -> void;
 };
 
 template <std::size_t bits> auto operator<<(std::ostream& os, const utils::finantial::Decimal<bits>& decimal) -> std::ostream&;
+
+template <std::size_t bits> auto operator<(std::bitset<bits> a, std::bitset<bits> b) -> bool;
+template <std::size_t bits> auto operator<=(std::bitset<bits> a, std::bitset<bits> b) -> bool;
 
 template <std::size_t bits> auto operator-(std::bitset<bits> a) -> std::bitset<bits>;
 template <std::size_t bits> auto operator+(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
 template <std::size_t bits> auto operator-(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
 template <std::size_t bits> auto operator*(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
+template <std::size_t bits> auto operator/(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
+template <std::size_t bits> auto operator%(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
+
 } // namespace utils::finantial
 
 #include "decimal.tpp"

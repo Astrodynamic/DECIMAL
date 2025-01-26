@@ -14,5 +14,7 @@ int main(int argc, char* argv[]) {
 // a = a + b;
   a += b;
   std::cout << -a << "\n";
+
+  std::cout << (utils::finantial::Decimal("171") /= utils::finantial::Decimal("10")) << "\n";
   return 0;
 }
