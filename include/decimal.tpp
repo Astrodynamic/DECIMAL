@@ -1,7 +1,9 @@
 #include "decimal.h"
+#include <algorithm>
 #include <bitset>
 #include <cstddef>
 #include <string_view>
+#include <cstdint>
 
 namespace utils::finantial {
 template <std::size_t bits> Decimal<bits>::Decimal(const std::string_view& value) {
@@ -9,7 +11,7 @@ template <std::size_t bits> Decimal<bits>::Decimal(const std::string_view& value
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator=(const std::string_view& value) -> Decimal<bits>& {
-  if (auto match = parse(value); match) {
+  if (const auto& match = parse(value); match) {
     conversion(*match);
   }
   return *this;
@@ -29,6 +31,7 @@ template <std::size_t bits> auto Decimal<bits>::operator>(const Decimal& other) 
 template <std::size_t bits> auto Decimal<bits>::operator>=(const Decimal& other) const noexcept -> bool {
   return !(*this < other);
 }
+
 
 template <std::size_t bits> auto Decimal<bits>::operator<=(const Decimal& other) const noexcept -> bool {
   return !(other < *this);
@@ -149,7 +152,7 @@ template <std::size_t bits> Decimal<bits>::operator std::string() const noexcept
     number += '.';
   }
 
-  if (shift <= this->m_exponent) {
+  if (shift <= this->m_exponent || number.empty()) {
     number += '0';
   }
 
@@ -216,20 +219,25 @@ template <std::size_t bits> auto Decimal<bits>::parse(const std::string_view& va
 template <std::size_t bits> auto Decimal<bits>::conversion(const std::cmatch& match) -> void {
   m_exponent = std::min<std::size_t>(m_max_exponent - match[2].length(), match[3].length());
 
+  std::string number = match[2].str() + match[3].str().substr(0, m_exponent);
+
+  std::vector<int> digits(number.size());
+  for (const char& digit : number) {
+    digits.push_back(digit - '0');
+  }
+
   std::size_t bit{}, value{}, carry{};
-  std::string temp, number = match[2].str() + match[3].str().substr(0, m_exponent);
-  while (!number.empty()) {
-    m_mantissa.set(bit++, (number.back() - '0') & 1);
+  while(!digits.empty()) {
+    m_mantissa.set(bit++, digits.back() & 1);
 
     carry = {};
-    for (char digit : number) {
-      value = carry * 10 + (digit - '0');
-      temp += value / 2 + '0';
+    for (int & digit : digits) {
+      value = carry * 10 + digit;
+      digit = value / 2;
       carry = value % 2;
-    }
-    temp.erase(0, temp.find_first_not_of('0'));
-    number = temp;
-    temp.clear();
+    };
+
+    digits.erase(digits.begin(), std::find_if(digits.begin(), digits.end(), [](const int& digit) { return digit != 0; }));
   }
 
   if (match[1] == "-") {
@@ -251,7 +259,7 @@ template <std::size_t bits> auto Decimal<bits>::normalize(Decimal& other) -> voi
   }
 }
 
-template <std::size_t bits> auto Decimal<bits>::fit() -> void {
+template <std::size_t bits> auto Decimal<bits>::fit() noexcept -> void {
   bool negative = m_mantissa[bits - 1];
   if (negative) m_mantissa = -m_mantissa;
   for (std::size_t i = m_bits - 2; i <= m_bits / 2 && m_exponent; --i) {

@@ -2,8 +2,15 @@
 
 #include "decimal.h"
 
-TEST(Decimal, castom_add) {
-  ASSERT_TRUE(true);
+using namespace utils::finantial;
+
+TEST(Decimal, ConstructorDefault) {
+  EXPECT_EQ(static_cast<std::string>(Decimal()), "+0");
+  EXPECT_EQ(static_cast<std::string>(Decimal("5.3")), "+5.3");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-5.3")), "-5.3");
+  EXPECT_EQ(static_cast<std::string>(Decimal(".5")), "+0.5");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-.005")), "-0.5");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-.80324809283904824342323423434432424243245")), "-8.032480928390482434232342343");
 }
 
 // START_TEST(castom_add_1) {
