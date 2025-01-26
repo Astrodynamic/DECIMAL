@@ -45,7 +45,7 @@ public:
 
   explicit operator std::string() const noexcept;
 
-  // [[nodiscard]] auto trunc() const noexcept -> Decimal;
+  [[nodiscard]] auto trunc() const noexcept -> Decimal;
   // [[nodiscard]] auto round() const noexcept -> Decimal;
   // [[nodiscard]] auto floor() const noexcept -> Decimal;
   // [[nodiscard]] auto ceil() const noexcept -> Decimal;

@@ -164,6 +164,15 @@ template <std::size_t bits> Decimal<bits>::operator std::string() const noexcept
   return number;
 }
 
+template <std::size_t bits> auto Decimal<bits>::trunc() const noexcept -> Decimal {
+  Decimal result(*this);
+  while (result.m_exponent > 0) {
+    result.m_mantissa = result.m_mantissa / std::bitset<m_bits>(0b1010);
+    --result.m_exponent;
+  }
+  return result;
+}
+
 template <std::size_t bits> auto Decimal<bits>::parse(const std::string_view& value) const -> std::optional<std::cmatch> {
   std::cmatch match;
   if (std::regex_match(value.begin(), value.end(), match, m_mask)) {
