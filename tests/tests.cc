@@ -9,8 +9,8 @@ TEST(Decimal, ConstructorDefault) {
   EXPECT_EQ(static_cast<std::string>(Decimal("5.3")), "+5.3");
   EXPECT_EQ(static_cast<std::string>(Decimal("-5.3")), "-5.3");
   EXPECT_EQ(static_cast<std::string>(Decimal(".5")), "+0.5");
-  EXPECT_EQ(static_cast<std::string>(Decimal("-.005")), "-0.5");
-  EXPECT_EQ(static_cast<std::string>(Decimal("-.80324809283904824342323423434432424243245")), "-8.032480928390482434232342343");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-.005")), "-0.005");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-.80324809283904824342323423434432424243245")), "-0.8032480928390482434232342343");
 }
 
 // START_TEST(castom_add_1) {

@@ -60,9 +60,11 @@ private:
   std::bitset<m_bits> m_mantissa{};
 
   [[nodiscard]] auto parse(const std::string_view& value) const -> std::optional<std::cmatch>;
+  [[nodiscard]] auto sign() const noexcept -> bool;
   auto conversion(const std::cmatch& match) -> void;
   auto normalize(Decimal& other) -> void;
   auto fit() noexcept -> void;
+  auto abs() noexcept -> Decimal&;
 };
 
 template <std::size_t bits> auto operator<<(std::ostream& os, Decimal<bits> decimal) -> std::ostream&;

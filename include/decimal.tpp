@@ -100,9 +100,9 @@ template <std::size_t bits> auto Decimal<bits>::operator/=(const Decimal& other)
   Decimal temp(other);
   normalize(temp);
 
-  bool negative = m_mantissa[bits - 1] ^ temp.m_mantissa[bits - 1];
-  if (m_mantissa[bits - 1]) m_mantissa = -m_mantissa;
-  if (temp.m_mantissa[bits - 1]) temp.m_mantissa = -temp.m_mantissa;
+  bool negative = m_mantissa[m_bits - 1] ^ temp.m_mantissa[m_bits - 1];
+  if (m_mantissa[m_bits - 1]) m_mantissa = -m_mantissa;
+  if (temp.m_mantissa[m_bits - 1]) temp.m_mantissa = -temp.m_mantissa;
 
   std::bitset<m_bits> div = this->m_mantissa % temp.m_mantissa;
   this->m_mantissa = this->m_mantissa / temp.m_mantissa;
@@ -123,9 +123,9 @@ template <std::size_t bits> auto Decimal<bits>::operator%=(const Decimal& other)
   Decimal temp(other);
   normalize(temp);
 
-  bool negative = m_mantissa[bits - 1];
-  if (m_mantissa[bits - 1]) m_mantissa = -m_mantissa;
-  if (temp.m_mantissa[bits - 1]) temp.m_mantissa = -temp.m_mantissa;
+  bool negative = m_mantissa[m_bits - 1];
+  if (m_mantissa[m_bits - 1]) m_mantissa = -m_mantissa;
+  if (temp.m_mantissa[m_bits - 1]) temp.m_mantissa = -temp.m_mantissa;
   m_mantissa = m_mantissa % temp.m_mantissa;
   fit();
   if (negative) m_mantissa = -m_mantissa;
@@ -133,37 +133,26 @@ template <std::size_t bits> auto Decimal<bits>::operator%=(const Decimal& other)
 }
 
 template <std::size_t bits> Decimal<bits>::operator std::string() const noexcept {
-  std::bitset<m_bits> temp(this->m_mantissa[m_bits - 1] ? -this->m_mantissa : this->m_mantissa), rest;
+  std::bitset<m_bits> mantissa(sign() ? -this->m_mantissa : this->m_mantissa);
 
-  std::string number;
-  std::size_t shift{1};
-  while (temp.any()) {
-    if (this->m_exponent == shift && shift > 1) {
-      number += '.';
-    }
-    rest = temp % std::bitset<m_bits>(0b1010);
-    temp = temp / std::bitset<m_bits>(0b1010);
-    number += rest.to_ulong() + '0';
-    rest.reset();
-    ++shift;
+  std::string result;
+  while (mantissa.any()) {
+    result += (mantissa % std::bitset<m_bits>(0b1010)).to_ulong() + '0';
+    mantissa = mantissa / std::bitset<m_bits>(0b1010);
   }
 
-  if (this->m_exponent == shift && shift > 1) {
-    number += '.';
+  while (result.size() <= m_exponent) {
+    result += '0';
   }
 
-  if (shift <= this->m_exponent || number.empty()) {
-    number += '0';
+  if (m_exponent) {
+    result.insert(m_exponent, ".");
   }
 
-  if (this->m_mantissa[bits - 1]) {
-    number += '-';
-  } else {
-    number += '+';
-  }
+  result += (sign() ? '-' : '+');
 
-  std::reverse(number.begin(), number.end());
-  return number;
+  std::reverse(result.begin(), result.end());
+  return result;
 }
 
 template <std::size_t bits> auto Decimal<bits>::trunc() const noexcept -> Decimal {
@@ -177,7 +166,7 @@ template <std::size_t bits> auto Decimal<bits>::trunc() const noexcept -> Decima
 
 template <std::size_t bits> auto Decimal<bits>::round() const noexcept -> Decimal {
   Decimal result(*this);
-  bool negative = result.m_mantissa[bits - 1];
+  bool negative = result.m_mantissa[m_bits - 1];
   if (negative) result.m_mantissa = -result.m_mantissa;
 
   if (result % Decimal("1") >= Decimal("0.5")) {
@@ -214,6 +203,10 @@ template <std::size_t bits> auto Decimal<bits>::parse(const std::string_view& va
     }
   }
   return {};
+}
+
+template <std::size_t bits> auto Decimal<bits>::sign() const noexcept -> bool {
+  return m_mantissa[m_bits - 1];
 }
 
 template <std::size_t bits> auto Decimal<bits>::conversion(const std::cmatch& match) -> void {
@@ -260,7 +253,7 @@ template <std::size_t bits> auto Decimal<bits>::normalize(Decimal& other) -> voi
 }
 
 template <std::size_t bits> auto Decimal<bits>::fit() noexcept -> void {
-  bool negative = m_mantissa[bits - 1];
+  bool negative = m_mantissa[m_bits - 1];
   if (negative) m_mantissa = -m_mantissa;
   for (std::size_t i = m_bits - 2; i <= m_bits / 2 && m_exponent; --i) {
     if (m_mantissa[i]) {
@@ -269,6 +262,12 @@ template <std::size_t bits> auto Decimal<bits>::fit() noexcept -> void {
     }
   }
   if (negative) m_mantissa = -m_mantissa;
+}
+
+template <std::size_t bits> auto Decimal<bits>::abs() noexcept -> Decimal<bits>& {
+  if (sign()) {
+    m_mantissa = -m_mantissa;
+  }
 }
 
 template <std::size_t bits> auto operator<<(std::ostream& os, Decimal<bits> decimal) -> std::ostream& {
