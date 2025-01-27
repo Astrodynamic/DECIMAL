@@ -328,6 +328,18 @@ TEST(Decimal, ComparisonGreater_7) {
   EXPECT_TRUE(Decimal("7922816251426433759354395033.5") > Decimal("7922816251426433759354395033.4"));
 }
 
+TEST(Decimal, ComparisonGreaterOrEqual_0) {
+  EXPECT_TRUE(Decimal("2.351") >= Decimal("2.351"));
+}
+
+TEST(Decimal, ComparisonGreaterOrEqual_1) {
+  EXPECT_TRUE(Decimal("2.351") >= Decimal("-2.351"));
+}
+
+TEST(Decimal, ComparisonGreaterOrEqual_2) {
+  EXPECT_TRUE(Decimal("2.3510000000000030000000000000") >= Decimal("2.35100000000000000000000004"));
+}
+
 
 // TEST(Decimal, OperatorUnaryMinus_1) {
 //   Decimal("2.1234");
