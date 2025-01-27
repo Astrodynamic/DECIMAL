@@ -54,7 +54,7 @@ private:
   static inline const std::regex m_mask{R"(^([+-]?)(?:0*)(\d*)(?:\.(\d*))?$)"};
 
   static constexpr std::size_t m_bits = bits * 2 + 1;
-  static constexpr std::size_t m_max_exponent = bits * 0.30102999566398119521373889472449;
+  static constexpr std::size_t m_max_exponent = bits * 0.30102999566398119521373889472449 + 1;
 
   std::size_t m_exponent{};
   std::bitset<m_bits> m_mantissa{};

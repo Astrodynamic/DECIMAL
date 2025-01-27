@@ -18,8 +18,7 @@ template <std::size_t bits> auto Decimal<bits>::operator=(const std::string_view
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator<(const Decimal& other) const noexcept -> bool {
-  Decimal a(this->m_mantissa[m_bits - 1] ? -*this : *this);
-  Decimal b(other.m_mantissa[other.m_bits - 1] ? -other : other);
+  Decimal a(*this), b(other);
   a.normalize(b);
   return a.m_mantissa < b.m_mantissa;
 }
@@ -32,23 +31,22 @@ template <std::size_t bits> auto Decimal<bits>::operator>=(const Decimal& other)
   return !(*this < other);
 }
 
-
 template <std::size_t bits> auto Decimal<bits>::operator<=(const Decimal& other) const noexcept -> bool {
   return !(other < *this);
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator==(const Decimal& other) const noexcept -> bool {
-  return !(*this != other);
+  Decimal a(*this), b(other);
+  a.normalize(b);
+  return a.m_mantissa == b.m_mantissa;
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator!=(const Decimal& other) const noexcept -> bool {
-  Decimal a(*this), b(other);
-  a.normalize(b);
-  return a.m_mantissa != b.m_mantissa;
+  return !(*this == other);
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator-() const noexcept -> Decimal {
-  Decimal<bits> result(*this);
+  Decimal result(*this);
   result.m_mantissa = -result.m_mantissa;
   return result;
 }
@@ -291,7 +289,7 @@ template <std::size_t bits> auto operator+(std::bitset<bits> a, std::bitset<bits
   std::bitset<bits> carry;
   while (b.any()) {
     carry = a & b;
-    a = a ^ b;
+    a ^= b;
     b = carry << 1;
   }
   return a;
