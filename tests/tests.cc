@@ -67,6 +67,11 @@ TEST(Decimal, AssignmetsInvalidInput) {
   EXPECT_EQ(static_cast<std::string>(a), "+0");
 }
 
+TEST(Decimal, CastToString) {
+  Decimal a("-.00432234234");
+  EXPECT_EQ(static_cast<std::string>(a), "-0.00432234234");
+}
+
 // START_TEST(castom_add_1) {
 //   castom_decimal src1, src2, origin, result;
 //   int value_type_result, value_type_origin;
