@@ -11,7 +11,7 @@
 namespace utils::finantial {
 template <std::size_t bits = 96> class Decimal final {
 public:
-  explicit Decimal(const std::string_view& value = {});
+  Decimal(const std::string_view& value = {});
   Decimal(const Decimal&) noexcept = default;
   Decimal(Decimal&&) noexcept = default;
   ~Decimal() = default;

@@ -36,6 +36,28 @@ TEST(Decimal, ConstructorMove) {
   EXPECT_EQ(static_cast<std::string>(d), "-0.005");
 }
 
+TEST(Decimal, AssignmentsStringView) {
+  std::string_view value = "5.3";
+  Decimal a = value;
+  EXPECT_EQ(static_cast<std::string>(a), "+5.3");
+
+  value = "-5.3";
+  Decimal b = value;
+  EXPECT_EQ(static_cast<std::string>(b), "-5.3");
+}
+
+TEST(Decimal, AssignmentsCopy) {
+  Decimal a("-.00432234234");
+  Decimal b(a);
+  EXPECT_EQ(static_cast<std::string>(b), "-0.00432234234");
+}
+
+TEST(Decimal, AssignmentsMove) {
+  Decimal a("-.00432234234");
+  Decimal b(std::move(a));
+  EXPECT_EQ(static_cast<std::string>(b), "-0.00432234234");
+}
+
 // START_TEST(castom_add_1) {
 //   castom_decimal src1, src2, origin, result;
 //   int value_type_result, value_type_origin;
