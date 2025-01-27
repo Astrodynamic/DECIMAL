@@ -36,6 +36,10 @@ TEST(Decimal, ConstructorMove) {
   EXPECT_EQ(static_cast<std::string>(d), "-0.005");
 }
 
+TEST(Decimal, ConstructorInvalidInput) {
+  EXPECT_EQ(static_cast<std::string>(Decimal("invalid")), "+0");
+}
+
 TEST(Decimal, AssignmentsStringView) {
   std::string_view value = "5.3";
   Decimal a = value;
@@ -56,6 +60,11 @@ TEST(Decimal, AssignmentsMove) {
   Decimal a("-.00432234234");
   Decimal b(std::move(a));
   EXPECT_EQ(static_cast<std::string>(b), "-0.00432234234");
+}
+
+TEST(Decimal, AssignmetsInvalidInput) {
+  Decimal a = std::string_view("invalid");
+  EXPECT_EQ(static_cast<std::string>(a), "+0");
 }
 
 // START_TEST(castom_add_1) {
