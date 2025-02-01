@@ -50,8 +50,9 @@ template <std::size_t bits> auto operator<=(std::bitset<bits> a, std::bitset<bit
   return !(b < a);
 }
 
-template <std::size_t bits> auto operator/(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits> {
-  bool negative = a[bits - 1] ^ b[bits - 1];
+template <std::size_t bits> auto div(std::bitset<bits>& a, std::bitset<bits> b) -> std::pair<std::bitset<bits>, std::bitset<bits>> {
+  bool div_sign = a[bits - 1] ^ b[bits - 1];
+  bool mod_sign = a[bits - 1];
   if (a[bits - 1]) a = -a;
   if (b[bits - 1]) b = -b;
   if (a.none() || b.none()) {
@@ -59,42 +60,33 @@ template <std::size_t bits> auto operator/(std::bitset<bits> a, std::bitset<bits
   }
 
   std::size_t bit{bits - 1};
-  std::bitset<bits> rest, result;
+  std::pair<std::bitset<bits>, std::bitset<bits>> result;
   do {
-    rest <<= 1;
-    rest.set(0, a[bit]);
-    if (b <= rest) {
-      result.set(bit);
-      rest -= b;
+    result.second <<= 1;
+    result.second.set(0, a[bit]);
+    if (b <= result.second) {
+      result.first.set(bit);
+      result.second -= b;
     }
   } while (bit--);
 
-  return negative ? -result : result;
+  if (div_sign) {
+    result.first = -result.first;
+  }
+
+  if (mod_sign) {
+    result.second = -result.second;
+  }
+
+  return result;
+}
+
+template <std::size_t bits> auto operator/(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits> {
+  return div(a, b).first;
 }
 
 template <std::size_t bits> auto operator%(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits> {
-  bool negative = a[bits - 1];
-  if (a[bits - 1]) a = -a;
-  if (b[bits - 1]) b = -b;
-  if (a.none()) {
-    return a;
-  }
-  if (b.none()) {
-    return b;
-  }
-
-  std::size_t bit{bits - 1};
-  std::bitset<bits> rest, result;
-  do {
-    rest <<= 1;
-    rest.set(0, a[bit]);
-    if (b <= rest) {
-      result.set(bit);
-      rest -= b;
-    }
-  } while (bit--);
-
-  return negative ? -rest : rest;
+  return div(a, b).second;
 }
 
 template <std::size_t bits> Decimal<bits>::Decimal(const std::string_view& value) {
