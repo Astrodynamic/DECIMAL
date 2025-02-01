@@ -763,19 +763,20 @@ TEST(Decimal, Floor_1) {
   EXPECT_EQ(static_cast<std::string>(Decimal("-4.0").floor()), "-4");
 }
 
-// TEST(Decimal, Ceil_0) {
-//   EXPECT_EQ(static_cast<std::string>(Decimal("0.0").ceil()), "+0");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("652.34631").ceil()), "+653");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("4.97623323").ceil()), "+5");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("4.5").ceil()), "+5");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("4").ceil()), "+4");
-// }
+TEST(Decimal, Ceil_0) {
+  EXPECT_EQ(static_cast<std::string>(Decimal("0.0").ceil()), "+0");
+  EXPECT_EQ(static_cast<std::string>(Decimal("652.34631").ceil()), "+653");
+  EXPECT_EQ(static_cast<std::string>(Decimal("4.97623323").ceil()), "+5");
+  EXPECT_EQ(static_cast<std::string>(Decimal("4.5").ceil()), "+5");
+  EXPECT_EQ(static_cast<std::string>(Decimal("4").ceil()), "+4");
+  EXPECT_EQ(static_cast<std::string>(Decimal("4.000000001").ceil()), "+5");
+}
 
-// TEST(Decimal, Ceil_1) {
-//   EXPECT_EQ(static_cast<std::string>(Decimal("-0.0").ceil()), "+0");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("-2.4363463").ceil()), "-2");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("-0.45").ceil()), "+0");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("-4.5").ceil()), "-4");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("-4.99").ceil()), "-4");
-//   EXPECT_EQ(static_cast<std::string>(Decimal("-4.0").ceil()), "-4");
-// }
+TEST(Decimal, Ceil_1) {
+  EXPECT_EQ(static_cast<std::string>(Decimal("-0.0").ceil()), "+0");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-2.4363463").ceil()), "-2");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-0.45").ceil()), "+0");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-4.5").ceil()), "-4");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-4.99").ceil()), "-4");
+  EXPECT_EQ(static_cast<std::string>(Decimal("-4.0").ceil()), "-4");
+}
