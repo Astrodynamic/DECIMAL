@@ -157,34 +157,23 @@ template <std::size_t bits> auto Decimal<bits>::trunc() const noexcept -> Decima
 }
 
 template <std::size_t bits> auto Decimal<bits>::round() const noexcept -> Decimal {
-  Decimal result(*this);
-  bool negative = result.m_mantissa[m_bits - 1];
-  if (negative) result.m_mantissa = -result.m_mantissa;
-
-  if (result % Decimal("1") >= Decimal("0.5")) {
-    result = result + Decimal("1");
-    return negative ? -result.trunc() : result.trunc();
-  } else {
-    return negative ? -result.trunc() : result.trunc();
-  }
+  return (*this + Decimal(sign() ? "-0.5" : "0.5")).trunc();
 }
 
 template <std::size_t bits> auto Decimal<bits>::floor() const noexcept -> Decimal {
-  Decimal result(*this);
-  if (!result.m_mantissa[result.m_bits - 1]) {
-    return result.trunc();
+  Decimal result(this->trunc());
+  if (result.sign() && this->m_exponent) {
+    result -= Decimal("1");
   }
-  result = result - Decimal("1");
-  return result.trunc();
+  return result;
 }
 
 template <std::size_t bits> auto Decimal<bits>::ceil() const noexcept -> Decimal {
-  Decimal result(*this);
-  if (result.m_mantissa[result.m_bits - 1]) {
-    return result.trunc();
+  Decimal result(this->trunc());
+  if (!result.sign() && this->m_exponent) {
+    result += Decimal("1");
   }
-  result = result + Decimal("1");
-  return result.trunc();
+  return result;
 }
 
 template <std::size_t bits> auto Decimal<bits>::parse(const std::string_view& value) const -> std::optional<std::cmatch> {
