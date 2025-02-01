@@ -611,7 +611,7 @@ TEST(Decimal, OperatorMulAndAssign_7) {
 
 TEST(Decimal, OperatorMulAndAssign_8) {
   Decimal a = Decimal("0.0000000000000000000000001567") *= Decimal("0.000800090769");
-  EXPECT_EQ(static_cast<std::string>(a), "+0.0000000000000000000000000001253742235023");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.0000000000000000000000000001");
 }
 
 TEST(Decimal, OperatorDiv_0) {
@@ -656,12 +656,12 @@ TEST(Decimal, OperatorDivAndAssign_2) {
 
 TEST(Decimal, OperatorDivAndAssign_3) {
   Decimal a = Decimal("2") /= Decimal("3");
-  EXPECT_EQ(static_cast<std::string>(a), "+0.6666666666666666666666666666");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.6666666666666666666666666667");
 }
 
 TEST(Decimal, OperatorDivAndAssign_4) {
   Decimal a = Decimal("9432747237234.43278947893292387944") /= Decimal("-0.0000000000004324234324234322");
-  EXPECT_EQ(static_cast<std::string>(a), "-21813681983814922954896245.548");
+  EXPECT_EQ(static_cast<std::string>(a), "-21813681983814922954896245.549");
 }
 
 

@@ -53,6 +53,7 @@ private:
 
   static constexpr std::size_t m_bits = bits * 2 + 1;
   static constexpr std::size_t m_max_exponent = bits * 0.30102999566398119521373889472449 + 1;
+  static constexpr std::bitset<m_bits> m_bit_one{0b1};
   static constexpr std::bitset<m_bits> m_bit_ten{0b1010};
 
   std::size_t m_exponent{};

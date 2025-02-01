@@ -50,7 +50,7 @@ template <std::size_t bits> auto operator<=(std::bitset<bits> a, std::bitset<bit
   return !(b < a);
 }
 
-template <std::size_t bits> auto div(std::bitset<bits>& a, std::bitset<bits> b) -> std::pair<std::bitset<bits>, std::bitset<bits>> {
+template <std::size_t bits> auto div(std::bitset<bits> a, std::bitset<bits> b) -> std::pair<std::bitset<bits>, std::bitset<bits>> {
   bool div_sign = a[bits - 1] ^ b[bits - 1];
   bool mod_sign = a[bits - 1];
   if (a[bits - 1]) a = -a;
@@ -188,7 +188,7 @@ template <std::size_t bits> auto Decimal<bits>::operator/=(const Decimal& other)
   std::bitset<m_bits> div = m_mantissa % temp.m_mantissa;
   m_mantissa = m_mantissa / temp.m_mantissa;
 
-  for (m_exponent = {}; div.any() && m_exponent < m_max_exponent - 1; ++m_exponent) {
+  for (m_exponent = {}; div.any() && m_exponent < m_max_exponent; ++m_exponent) {
     m_mantissa = m_mantissa * m_bit_ten;
     div = div * m_bit_ten;
     m_mantissa += div / temp.m_mantissa;
@@ -212,8 +212,9 @@ template <std::size_t bits> Decimal<bits>::operator std::string() const noexcept
 
   std::string result;
   while (mantissa.any()) {
-    result += (mantissa % m_bit_ten).to_ulong() + '0';
-    mantissa = mantissa / m_bit_ten;
+    const auto& divmod = div(mantissa, m_bit_ten);
+    result += divmod.second.to_ulong() + '0';
+    mantissa = divmod.first;
   }
 
   while (result.size() <= m_exponent) {
@@ -319,11 +320,19 @@ template <std::size_t bits> auto Decimal<bits>::normalize(Decimal& other) -> voi
 template <std::size_t bits> auto Decimal<bits>::fit() noexcept -> void {
   bool negative = sign();
   abs();
-  for (std::size_t i = m_bits - 2; (i >= m_bits / 2) && m_exponent; --i) {
-    if (m_mantissa[i] && m_exponent--) {
-      m_mantissa = m_mantissa / m_bit_ten;
+  std::pair<std::bitset<m_bits>, std::bitset<m_bits>> divmod;
+  for (std::size_t i = m_bits - 2; i >= m_bits / 2 && m_exponent; --i) {
+    if (m_mantissa[i] || m_exponent >= m_max_exponent) {
+      m_mantissa = (divmod = div(m_mantissa, m_bit_ten)).first;
+      --m_exponent;
     }
   }
+
+  auto digit = divmod.second.to_ulong();
+  if (digit > 5 || (digit == 5 && m_mantissa[0])) {
+    m_mantissa += m_bit_one;
+  }
+
   if (negative) m_mantissa = -m_mantissa;
 }
 
