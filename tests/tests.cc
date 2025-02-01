@@ -575,228 +575,108 @@ TEST(Decimal, OperatorMulAndAssign_0) {
 }
 
 TEST(Decimal, OperatorMulAndAssign_1) {
-  Decimal a = Decimal("1") * Decimal("98745654321");
+  Decimal a = Decimal("1") *= Decimal("98745654321");
   EXPECT_EQ(static_cast<std::string>(a), "+98745654321");
 }
 
 TEST(Decimal, OperatorMulAndAssign_2) {
-  Decimal a = Decimal("-9878798789") * Decimal("-3");
+  Decimal a = Decimal("-9878798789") *= Decimal("-3");
   EXPECT_EQ(static_cast<std::string>(a), "+29636396367");
 }
 
 TEST(Decimal, OperatorMulAndAssign_3) {
-  Decimal a = Decimal("-545454512454545.35265454545645") * Decimal("54564654");
+  Decimal a = Decimal("-545454512454545.35265454545645") *= Decimal("54564654");
   EXPECT_EQ(static_cast<std::string>(a), "-29762536744820957894903.254358");
 }
 
 TEST(Decimal, OperatorMulAndAssign_4) {
-  Decimal a = Decimal("-545454512454545.35265454545645") * Decimal("-5.352654545456454545645464");
+  Decimal a = Decimal("-545454512454545.35265454545645") *= Decimal("-5.352654545456454545645464");
   EXPECT_EQ(static_cast<std::string>(a), "+2919629575429556.4794476881359");
 }
 
 TEST(Decimal, OperatorMulAndAssign_5) {
-  Decimal a = Decimal("79228162514264337593543950335") * Decimal("-1");
+  Decimal a = Decimal("79228162514264337593543950335") *= Decimal("-1");
   EXPECT_EQ(static_cast<std::string>(a), "-79228162514264337593543950335");
 }
 
 TEST(Decimal, OperatorMulAndAssign_6) {
-  Decimal a = Decimal("18446744073709551617.0") * Decimal("87654531534564545456464.98565");
+  Decimal a = Decimal("18446744073709551617.0") *= Decimal("87654531534564545456464.98565");
   EXPECT_EQ(static_cast<std::string>(a), "+1616940710119015538122712318190672286121839");
 }
 
 TEST(Decimal, OperatorMulAndAssign_7) {
-  Decimal a = Decimal("79228162514264337593543950335") * Decimal("-79228162514264337593543950335");
+  Decimal a = Decimal("79228162514264337593543950335") *= Decimal("-79228162514264337593543950335");
   EXPECT_EQ(static_cast<std::string>(a), "-6277101735386680763835789423049210091073826769276946612225");
 }
 
 TEST(Decimal, OperatorMulAndAssign_8) {
-  Decimal a = Decimal("0.0000000000000000000000001567") * Decimal("0.000800090769");
+  Decimal a = Decimal("0.0000000000000000000000001567") *= Decimal("0.000800090769");
   EXPECT_EQ(static_cast<std::string>(a), "+0.0000000000000000000000000001253742235023");
+}
+
+TEST(Decimal, OperatorDiv_0) {
+  Decimal a = Decimal("30064771176") / Decimal("3");
+  EXPECT_EQ(static_cast<std::string>(a), "+10021590392");
+}
+
+TEST(Decimal, OperatorDiv_1) {
+  Decimal a = Decimal("32768") / Decimal("-2");
+  EXPECT_EQ(static_cast<std::string>(a), "-16384");
+}
+
+TEST(Decimal, OperatorDiv_2) {
+  Decimal a = Decimal("-30064771176") / Decimal("2");
+  EXPECT_EQ(static_cast<std::string>(a), "-15032385588");
+}
+
+TEST(Decimal, OperatorDiv_3) {
+  Decimal a = Decimal("30064771176") / Decimal("-2");
+  EXPECT_EQ(static_cast<std::string>(a), "-15032385588");
+}
+
+TEST(Decimal, OperatorDiv_4) {
+  Decimal a = Decimal("0") / Decimal("0.015");
+  EXPECT_EQ(static_cast<std::string>(a), "+0");
+}
+
+TEST(Decimal, OperatorDivAndAssign_0) {
+  Decimal a = Decimal("-101") /= Decimal("10.1");
+  EXPECT_EQ(static_cast<std::string>(a), "-10");
+}
+
+TEST(Decimal, OperatorDivAndAssign_1) {
+  Decimal a = Decimal("-101") /= Decimal("0.0");
+  EXPECT_EQ(static_cast<std::string>(a), "+0");
+}
+
+TEST(Decimal, OperatorDivAndAssign_2) {
+  Decimal a = Decimal("3") /= Decimal("2");
+  EXPECT_EQ(static_cast<std::string>(a), "+1.5");
+}
+
+TEST(Decimal, OperatorDivAndAssign_3) {
+  Decimal a = Decimal("2") /= Decimal("3");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.6666666666666666666666666666");
+}
+
+TEST(Decimal, OperatorDivAndAssign_4) {
+  Decimal a = Decimal("9432747237234.43278947893292387944") /= Decimal("-0.0000000000004324234324234322");
+  EXPECT_EQ(static_cast<std::string>(a), "-21813681983814922954896245.548");
+}
+
+
+TEST(Decimal, OperatorMod_0) {
+  Decimal a = Decimal("2.54") % Decimal("3.21");
+  EXPECT_EQ(static_cast<std::string>(a), "+2.54");
+}
+
+TEST(Decimal, OperatorMod_1) {
+  Decimal a = Decimal("3.42") % Decimal("3.21");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.21");
 }
 
 
 
-
-
-
-
-
-// START_TEST(castom_div_1) {
-//   castom_decimal src1, src2, result, origin;
-//   // 30064771176
-//   // 3
-//   // 10021590392
-//   src1.bits[0] = 0b00000000000000000000000001101000;
-//   src1.bits[1] = 0b00000000000000000000000000000111;
-//   src1.bits[2] = 0b00000000000000000000000000000000;
-//   src1.bits[3] = 0b00000000000000000000000000000000;
-//   src2.bits[0] = 0b00000000000000000000000000000011;
-//   src2.bits[1] = 0b00000000000000000000000000000000;
-//   src2.bits[2] = 0b00000000000000000000000000000000;
-//   src2.bits[3] = 0b00000000000000000000000000000000;
-//   origin.bits[0] = 0b01010101010101010101010101111000;
-//   origin.bits[1] = 0b00000000000000000000000000000010;
-//   origin.bits[2] = 0b00000000000000000000000000000000;
-//   origin.bits[3] = 0b00000000000000000000000000000000;
-//   int check = castom_div(src1, src2, &result);
-//   int check_origin = 0;
-//   ck_assert_int_eq(check, check_origin);
-//   ck_assert_int_eq(result.bits[3], origin.bits[3]);
-//   ck_assert_int_eq(result.bits[2], origin.bits[2]);
-//   ck_assert_int_eq(result.bits[1], origin.bits[1]);
-//   ck_assert_int_eq(result.bits[0], origin.bits[0]);
-// }
-// END_TEST
-
-// START_TEST(castom_div_2) {
-//   castom_decimal src1, src2, result;
-//   int a = 32768;
-//   int b = -2;
-//   int res_our_dec = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   int res_origin = -16384;
-//   int check = castom_div(src1, src2, &result);
-//   int check_origin = 0;
-//   castom_from_decimal_to_int(result, &res_our_dec);
-//   ck_assert_int_eq(res_our_dec, res_origin);
-//   ck_assert_int_eq(check, check_origin);
-// }
-// END_TEST
-
-// START_TEST(castom_div_3) {
-//   castom_decimal src1, src2, result;
-//   int a = 32768;
-//   int b = 2;
-//   int res_our_dec = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   int res_origin = 16384;
-//   int check = castom_div(src1, src2, &result);
-//   int check_origin = 0;
-//   castom_from_decimal_to_int(result, &res_our_dec);
-//   ck_assert_int_eq(res_our_dec, res_origin);
-//   ck_assert_int_eq(check, check_origin);
-// }
-// END_TEST
-
-// START_TEST(castom_div_4) {
-//   castom_decimal src1, src2, result, origin;
-//   // -30064771176
-//   // 2
-//   // 10021590392
-//   src1.bits[0] = 0b00000000000000000000000001101000;
-//   src1.bits[1] = 0b00000000000000000000000000000111;
-//   src1.bits[2] = 0b00000000000000000000000000000000;
-//   src1.bits[3] = 0b10000000000000000000000000000000;
-//   src2.bits[0] = 0b00000000000000000000000000000010;
-//   src2.bits[1] = 0b00000000000000000000000000000000;
-//   src2.bits[2] = 0b00000000000000000000000000000000;
-//   src2.bits[3] = 0b00000000000000000000000000000000;
-//   origin.bits[0] = 0b10000000000000000000000000110100;
-//   origin.bits[1] = 0b00000000000000000000000000000011;
-//   origin.bits[2] = 0b00000000000000000000000000000000;
-//   origin.bits[3] = 0b10000000000000000000000000000000;
-//   int check = castom_div(src1, src2, &result);
-//   int check_origin = 0;
-//   ck_assert_int_eq(check, check_origin);
-//   ck_assert_int_eq(result.bits[3], origin.bits[3]);
-//   ck_assert_int_eq(result.bits[2], origin.bits[2]);
-//   ck_assert_int_eq(result.bits[1], origin.bits[1]);
-//   ck_assert_int_eq(result.bits[0], origin.bits[0]);
-// }
-// END_TEST
-
-// START_TEST(castom_div_5) {
-//   castom_decimal src1, src2, result, origin;
-//   // 0
-//   // 0.015
-//   // 0
-//   src1.bits[0] = 0b00000000000000000000000000000000;
-//   src1.bits[1] = 0b00000000000000000000000000000000;
-//   src1.bits[2] = 0b00000000000000000000000000000000;
-//   src1.bits[3] = 0b00000000000000000000000000000000;
-//   src2.bits[0] = 0b00000000000000000000000000001111;
-//   src2.bits[1] = 0b00000000000000000000000000000000;
-//   src2.bits[2] = 0b00000000000000000000000000000000;
-//   src2.bits[3] = 0b00000000000000110000000000000000;
-//   origin.bits[0] = 0b00000000000000000000000000000000;
-//   origin.bits[1] = 0b00000000000000000000000000000000;
-//   origin.bits[2] = 0b00000000000000000000000000000000;
-//   origin.bits[3] = 0b00000000000000000000000000000000;
-//   int check = castom_div(src1, src2, &result);
-//   int check_origin = 0;
-//   ck_assert_int_eq(check, check_origin);
-//   ck_assert_int_eq(result.bits[3], origin.bits[3]);
-//   ck_assert_int_eq(result.bits[2], origin.bits[2]);
-//   ck_assert_int_eq(result.bits[1], origin.bits[1]);
-//   ck_assert_int_eq(result.bits[0], origin.bits[0]);
-// }
-// END_TEST
-
-// START_TEST(castom_div_7) {
-//   castom_decimal src1, src2, result, origin;
-//   castom_from_int_to_decimal(-101, &src1);
-//   castom_from_float_to_decimal(10.1, &src2);
-//   int check = castom_div(src1, src2, &result);
-//   int check_origin = 0;
-//   origin.bits[0] = 0b00000000000000000000000000001010;
-//   origin.bits[1] = 0b00000000000000000000000000000000;
-//   origin.bits[2] = 0b00000000000000000000000000000000;
-//   origin.bits[3] = 0b10000000000000000000000000000000;
-//   ck_assert_int_eq(check, check_origin);
-//   ck_assert_int_eq(result.bits[3], origin.bits[3]);
-//   ck_assert_int_eq(result.bits[2], origin.bits[2]);
-//   ck_assert_int_eq(result.bits[1], origin.bits[1]);
-//   ck_assert_int_eq(result.bits[0], origin.bits[0]);
-// }
-// END_TEST
-
-// START_TEST(castom_div_8) {
-//   castom_decimal src1, src2, result;
-//   float a = 1.0 / 0.0;
-//   float b = 1.0 / 0.0;
-//   castom_from_float_to_decimal(a, &src1);
-//   castom_from_float_to_decimal(b, &src2);
-//   int check = castom_div(src1, src2, &result);
-//   int check_origin = 3;
-//   ck_assert_int_eq(check, check_origin);
-//   ck_assert_int_eq(result.bits[3], 0);
-//   ck_assert_int_eq(result.bits[2], 0);
-//   ck_assert_int_eq(result.bits[1], 0);
-//   ck_assert_int_eq(result.bits[0], 0);
-// }
-// END_TEST
-
-// START_TEST(castom_div_10) {
-//   castom_decimal src1, src2, result;
-//   float a = -115.2;
-//   float b = 0.0;
-//   castom_from_float_to_decimal(a, &src1);
-//   castom_from_float_to_decimal(b, &src2);
-//   int check = castom_div(src1, src2, &result);
-//   int check_origin = 3;
-//   ck_assert_int_eq(check_origin, check);
-//   ck_assert_int_eq(result.bits[3], 0);
-//   ck_assert_int_eq(result.bits[2], 0);
-//   ck_assert_int_eq(result.bits[1], 0);
-//   ck_assert_int_eq(result.bits[0], 0);
-// }
-// END_TEST
-
-// START_TEST(castom_mod_1) {
-//   castom_decimal src1, src2, res_mod;
-//   int a = 3;
-//   int b = 2;
-//   int res_origin = a % b;
-//   int res = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   castom_mod(src1, src2, &res_mod);
-//   castom_from_decimal_to_int(res_mod, &res);
-//   ck_assert_int_eq(res_origin, res);
-// }
-// END_TEST
 
 // START_TEST(castom_mod_2) {
 //   castom_decimal src1, src2, res_mod;
@@ -4250,639 +4130,3 @@ TEST(Decimal, OperatorMulAndAssign_8) {
 //   ck_assert_int_eq(check, check_origin);
 // }
 // END_TEST
-
-// void srunner_add_comparsion_tests(SRunner *sr) {
-//   Suite *s1 = suite_create("Add");
-//   TCase *tc1_1 = tcase_create("Add");
-//   suite_add_tcase(s1, tc1_1);
-//   tcase_add_test(tc1_1, castom_equal_1);
-//   tcase_add_test(tc1_1, castom_equal_2);
-//   tcase_add_test(tc1_1, castom_equal_3_fraction);
-//   tcase_add_test(tc1_1, castom_equal_4_sign);
-//   tcase_add_test(tc1_1, castom_equal_5_sign);
-//   tcase_add_test(tc1_1, castom_equal_6);
-//   tcase_add_test(tc1_1, castom_equal_7);
-//   tcase_add_test(tc1_1, castom_equal_8);
-//   tcase_add_test(tc1_1, castom_equal_9_ss);
-//   tcase_add_test(tc1_1, castom_equal_10);
-//   tcase_add_test(tc1_1, castom_equal_11_zero);
-//   tcase_add_test(tc1_1, castom_equal_12_value);
-//   tcase_add_test(tc1_1, castom_equal_13_value);
-//   tcase_add_test(tc1_1, castom_equal_14_value);
-//   tcase_add_test(tc1_1, castom_equal_15);
-//   tcase_add_test(tc1_1, castom_equal_16);
-//   tcase_add_test(tc1_1, castom_equal_17);
-//   tcase_add_test(tc1_1, castom_equal_18);
-//   tcase_add_test(tc1_1, castom_equal_19);
-//   tcase_add_test(tc1_1, castom_equal_20);
-//   tcase_add_test(tc1_1, castom_equal_21);
-//   tcase_add_test(tc1_1, castom_equal_22);
-//   tcase_add_test(tc1_1, castom_equal_23);
-//   tcase_add_test(tc1_1, castom_equal_24);
-//   tcase_add_test(tc1_1, castom_equal_25);
-//   tcase_add_test(tc1_1, castom_equal_26);
-//   tcase_add_test(tc1_1, castom_equal_27);
-//   tcase_add_test(tc1_1, castom_equal_28);
-//   tcase_add_test(tc1_1, castom_equal_29);
-//   tcase_add_test(tc1_1, castom_equal_30);
-//   tcase_add_test(tc1_1, castom_equal_31);
-//   tcase_add_test(tc1_1, castom_equal_32);
-//   tcase_add_test(tc1_1, castom_equal_33);
-//   tcase_add_test(tc1_1, castom_equal_34);
-//   tcase_add_test(tc1_1, castom_equal_35);
-//   tcase_add_test(tc1_1, castom_equal_36);
-//   tcase_add_test(tc1_1, castom_equal_37);
-//   tcase_add_test(tc1_1, castom_equal_38);
-//   tcase_add_test(tc1_1, castom_equal_39);
-//   tcase_add_test(tc1_1, castom_equal_40);
-//   tcase_add_test(tc1_1, castom_equal_41);
-//   tcase_add_test(tc1_1, castom_equal_42);
-//   tcase_add_test(tc1_1, castom_equal_43);
-//   tcase_add_test(tc1_1, castom_equal_44);
-//   tcase_add_test(tc1_1, castom_equal_45);
-//   tcase_add_test(tc1_1, castom_equal_46);
-//   tcase_add_test(tc1_1, castom_equal_47);
-//   tcase_add_test(tc1_1, castom_equal_48);
-//   tcase_add_test(tc1_1, castom_equal_49);
-//   tcase_add_test(tc1_1, castom_equal_50);
-//   tcase_add_test(tc1_1, castom_equal_51);
-//   tcase_add_test(tc1_1, castom_equal_52);
-//   tcase_add_test(tc1_1, castom_equal_53);
-//   tcase_add_test(tc1_1, castom_equal_54);
-//   tcase_add_test(tc1_1, castom_not_equal_1_1);
-//   tcase_add_test(tc1_1, castom_not_equal_2_1);
-//   tcase_add_test(tc1_1, castom_not_equal_3_fraction_1);
-//   tcase_add_test(tc1_1, castom_not_equal_4_sign_1);
-//   tcase_add_test(tc1_1, castom_not_equal_5_sign_1);
-//   tcase_add_test(tc1_1, castom_not_equal_6_1);
-//   tcase_add_test(tc1_1, castom_not_equal_7_1);
-//   tcase_add_test(tc1_1, castom_not_equal_8_1);
-//   tcase_add_test(tc1_1, castom_not_equal_9_ss_1);
-//   tcase_add_test(tc1_1, castom_not_equal_10_1);
-//   tcase_add_test(tc1_1, castom_not_equal_11_zero_1);
-//   tcase_add_test(tc1_1, castom_not_equal_12_value_1);
-//   tcase_add_test(tc1_1, castom_not_equal_13_value_1);
-//   tcase_add_test(tc1_1, castom_not_equal_14_value_1);
-//   tcase_add_test(tc1_1, castom_not_equal_1);
-//   tcase_add_test(tc1_1, castom_not_equal_2);
-//   tcase_add_test(tc1_1, castom_not_equal_3);
-//   tcase_add_test(tc1_1, castom_not_equal_4);
-//   tcase_add_test(tc1_1, castom_not_equal_5);
-//   tcase_add_test(tc1_1, castom_not_equal_6);
-//   tcase_add_test(tc1_1, castom_not_equal_7);
-//   tcase_add_test(tc1_1, castom_not_equal_8);
-//   tcase_add_test(tc1_1, castom_not_equal_9);
-//   tcase_add_test(tc1_1, castom_not_equal_10);
-//   tcase_add_test(tc1_1, castom_not_equal_11);
-//   tcase_add_test(tc1_1, castom_not_equal_12);
-//   tcase_add_test(tc1_1, castom_not_equal_13);
-//   tcase_add_test(tc1_1, castom_not_equal_14);
-//   tcase_add_test(tc1_1, castom_not_equal_15);
-//   tcase_add_test(tc1_1, castom_not_equal_16);
-//   tcase_add_test(tc1_1, castom_not_equal_17);
-//   tcase_add_test(tc1_1, castom_not_equal_18);
-//   tcase_add_test(tc1_1, castom_not_equal_19);
-//   tcase_add_test(tc1_1, castom_not_equal_20);
-//   tcase_add_test(tc1_1, castom_not_equal_21);
-//   tcase_add_test(tc1_1, castom_not_equal_22);
-//   tcase_add_test(tc1_1, castom_not_equal_23);
-//   tcase_add_test(tc1_1, castom_not_equal_24);
-//   tcase_add_test(tc1_1, castom_not_equal_25);
-//   tcase_add_test(tc1_1, castom_not_equal_26);
-//   tcase_add_test(tc1_1, castom_not_equal_27);
-//   tcase_add_test(tc1_1, castom_not_equal_28);
-//   tcase_add_test(tc1_1, castom_not_equal_29);
-//   tcase_add_test(tc1_1, castom_not_equal_30);
-//   tcase_add_test(tc1_1, castom_not_equal_31);
-//   tcase_add_test(tc1_1, castom_not_equal_32);
-//   tcase_add_test(tc1_1, castom_not_equal_33);
-//   tcase_add_test(tc1_1, castom_not_equal_34);
-//   tcase_add_test(tc1_1, castom_not_equal_35);
-//   tcase_add_test(tc1_1, castom_not_equal_36);
-//   tcase_add_test(tc1_1, castom_not_equal_37);
-//   tcase_add_test(tc1_1, castom_not_equal_38);
-//   tcase_add_test(tc1_1, castom_not_equal_39);
-//   tcase_add_test(tc1_1, castom_not_equal_40);
-//   tcase_add_test(tc1_1, castom_less_1);
-//   tcase_add_test(tc1_1, castom_less_2);
-//   tcase_add_test(tc1_1, castom_less_3_zero);
-//   tcase_add_test(tc1_1, castom_less_4_zero);
-//   tcase_add_test(tc1_1, castom_less_5_len_int_part);
-//   tcase_add_test(tc1_1, castom_less_6_len_int_part_positive);
-//   tcase_add_test(tc1_1, castom_less_7_len_int_part_negative);
-//   tcase_add_test(tc1_1, castom_less_8_value_int_part_positive);
-//   tcase_add_test(tc1_1, castom_less_9_value_fract_part_positive);
-//   tcase_add_test(tc1_1, castom_less_10_max_int_positive);
-//   tcase_add_test(tc1_1, castom_less_11_max_int_negative);
-//   tcase_add_test(tc1_1, castom_less_12);
-//   tcase_add_test(tc1_1, castom_less_13);
-//   tcase_add_test(tc1_1, castom_less_14);
-//   tcase_add_test(tc1_1, castom_less_15);
-//   tcase_add_test(tc1_1, castom_less_16);
-//   tcase_add_test(tc1_1, castom_less_17);
-//   tcase_add_test(tc1_1, castom_less_18);
-//   tcase_add_test(tc1_1, castom_less_19);
-//   tcase_add_test(tc1_1, castom_less_20);
-//   tcase_add_test(tc1_1, castom_less_21);
-//   tcase_add_test(tc1_1, castom_less_22);
-//   tcase_add_test(tc1_1, castom_less_23);
-//   tcase_add_test(tc1_1, castom_less_24);
-//   tcase_add_test(tc1_1, castom_less_25);
-//   tcase_add_test(tc1_1, castom_less_26);
-//   tcase_add_test(tc1_1, castom_less_27);
-//   tcase_add_test(tc1_1, castom_less_28);
-//   tcase_add_test(tc1_1, castom_less_29);
-//   tcase_add_test(tc1_1, castom_less_30);
-//   tcase_add_test(tc1_1, castom_less_31);
-//   tcase_add_test(tc1_1, castom_less_32);
-//   tcase_add_test(tc1_1, castom_less_33);
-//   tcase_add_test(tc1_1, castom_less_34);
-//   tcase_add_test(tc1_1, castom_less_35);
-//   tcase_add_test(tc1_1, castom_less_36);
-//   tcase_add_test(tc1_1, castom_less_37);
-//   tcase_add_test(tc1_1, castom_less_38);
-//   tcase_add_test(tc1_1, castom_less_39);
-//   tcase_add_test(tc1_1, castom_less_40);
-//   tcase_add_test(tc1_1, castom_less_41);
-//   tcase_add_test(tc1_1, castom_less_42);
-//   tcase_add_test(tc1_1, castom_less_43);
-//   tcase_add_test(tc1_1, castom_less_44);
-//   tcase_add_test(tc1_1, castom_less_45);
-//   tcase_add_test(tc1_1, castom_less_46);
-//   tcase_add_test(tc1_1, castom_less_47);
-//   tcase_add_test(tc1_1, castom_less_48);
-//   tcase_add_test(tc1_1, castom_less_49);
-//   tcase_add_test(tc1_1, castom_less_50);
-//   tcase_add_test(tc1_1, castom_less_51);
-//   tcase_add_test(tc1_1, castom_less_52);
-//   tcase_add_test(tc1_1, castom_less_or_equal_1);
-//   tcase_add_test(tc1_1, castom_less_or_equal_2);
-//   tcase_add_test(tc1_1, castom_less_or_equal_3);
-//   tcase_add_test(tc1_1, castom_less_or_equal_4);
-//   tcase_add_test(tc1_1, castom_less_or_equal_5);
-//   tcase_add_test(tc1_1, castom_less_or_equal_6);
-//   tcase_add_test(tc1_1, castom_less_or_equal_7);
-//   tcase_add_test(tc1_1, castom_less_or_equal_8);
-//   tcase_add_test(tc1_1, castom_less_or_equal_9);
-//   tcase_add_test(tc1_1, castom_less_or_equal_10);
-//   tcase_add_test(tc1_1, castom_less_or_equal_11);
-//   tcase_add_test(tc1_1, castom_less_or_equal_12);
-//   tcase_add_test(tc1_1, castom_less_or_equal_13);
-//   tcase_add_test(tc1_1, castom_less_or_equal_14);
-//   tcase_add_test(tc1_1, castom_less_or_equal_15);
-//   tcase_add_test(tc1_1, castom_less_or_equal_16);
-//   tcase_add_test(tc1_1, castom_less_or_equal_17);
-//   tcase_add_test(tc1_1, castom_less_or_equal_18);
-//   tcase_add_test(tc1_1, castom_less_or_equal_19);
-//   tcase_add_test(tc1_1, castom_less_or_equal_20);
-//   tcase_add_test(tc1_1, castom_less_or_equal_21);
-//   tcase_add_test(tc1_1, castom_less_or_equal_22);
-//   tcase_add_test(tc1_1, castom_less_or_equal_23);
-//   tcase_add_test(tc1_1, castom_less_or_equal_24);
-//   tcase_add_test(tc1_1, castom_less_or_equal_25);
-//   tcase_add_test(tc1_1, castom_less_or_equal_26);
-//   tcase_add_test(tc1_1, castom_less_or_equal_27);
-//   tcase_add_test(tc1_1, castom_less_or_equal_28);
-//   tcase_add_test(tc1_1, castom_less_or_equal_29);
-//   tcase_add_test(tc1_1, castom_less_or_equal_30);
-//   tcase_add_test(tc1_1, castom_less_or_equal_31);
-//   tcase_add_test(tc1_1, castom_less_or_equal_32);
-//   tcase_add_test(tc1_1, castom_less_or_equal_33);
-//   tcase_add_test(tc1_1, castom_less_or_equal_34);
-//   tcase_add_test(tc1_1, castom_less_or_equal_35);
-//   tcase_add_test(tc1_1, castom_less_or_equal_36);
-//   tcase_add_test(tc1_1, castom_less_or_equal_37);
-//   tcase_add_test(tc1_1, castom_less_or_equal_38);
-//   tcase_add_test(tc1_1, castom_less_or_equal_39);
-//   tcase_add_test(tc1_1, castom_less_or_equal_40);
-//   tcase_add_test(tc1_1, castom_greater_1);
-//   tcase_add_test(tc1_1, castom_greater_2);
-//   tcase_add_test(tc1_1, castom_greater_3);
-//   tcase_add_test(tc1_1, castom_greater_4);
-//   tcase_add_test(tc1_1, castom_greater_5);
-//   tcase_add_test(tc1_1, castom_greater_6);
-//   tcase_add_test(tc1_1, castom_greater_7);
-//   tcase_add_test(tc1_1, castom_greater_8);
-//   tcase_add_test(tc1_1, castom_greater_9);
-//   tcase_add_test(tc1_1, castom_greater_10);
-//   tcase_add_test(tc1_1, castom_greater_11);
-//   tcase_add_test(tc1_1, castom_greater_12);
-//   tcase_add_test(tc1_1, castom_greater_13);
-//   tcase_add_test(tc1_1, castom_greater_14);
-//   tcase_add_test(tc1_1, castom_greater_15);
-//   tcase_add_test(tc1_1, castom_greater_16);
-//   tcase_add_test(tc1_1, castom_greater_17);
-//   tcase_add_test(tc1_1, castom_greater_18);
-//   tcase_add_test(tc1_1, castom_greater_19);
-//   tcase_add_test(tc1_1, castom_greater_20);
-//   tcase_add_test(tc1_1, castom_greater_21);
-//   tcase_add_test(tc1_1, castom_greater_22);
-//   tcase_add_test(tc1_1, castom_greater_23);
-//   tcase_add_test(tc1_1, castom_greater_24);
-//   tcase_add_test(tc1_1, castom_greater_25);
-//   tcase_add_test(tc1_1, castom_greater_26);
-//   tcase_add_test(tc1_1, castom_greater_27);
-//   tcase_add_test(tc1_1, castom_greater_28);
-//   tcase_add_test(tc1_1, castom_greater_29);
-//   tcase_add_test(tc1_1, castom_greater_30);
-//   tcase_add_test(tc1_1, castom_greater_31);
-//   tcase_add_test(tc1_1, castom_greater_32);
-//   tcase_add_test(tc1_1, castom_greater_33);
-//   tcase_add_test(tc1_1, castom_greater_34);
-//   tcase_add_test(tc1_1, castom_greater_35);
-//   tcase_add_test(tc1_1, castom_greater_36);
-//   tcase_add_test(tc1_1, castom_greater_37);
-//   tcase_add_test(tc1_1, castom_greater_38);
-//   tcase_add_test(tc1_1, castom_greater_39);
-//   tcase_add_test(tc1_1, castom_greater_40);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_1);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_2);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_3);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_4);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_5);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_6);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_7);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_8);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_9);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_10);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_11);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_12);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_13);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_14);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_15);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_16);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_17);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_18);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_19);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_20);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_21);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_22);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_23);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_24);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_25);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_26);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_27);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_28);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_29);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_30);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_31);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_32);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_33);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_34);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_35);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_36);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_37);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_38);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_39);
-//   tcase_add_test(tc1_1, castom_greater_or_equal_40);
-//   srunner_add_suite(sr, s1);
-// }
-
-// void srunner_add_arithmetic_tests(SRunner *sr) {
-//   Suite *s1 = suite_create("Arithmetics");
-//   TCase *tc1_1 = tcase_create("Arithmetics");
-//   suite_add_tcase(s1, tc1_1);
-
-//   tcase_add_test(tc1_1, castom_div_1);
-//   tcase_add_test(tc1_1, castom_div_2);
-//   tcase_add_test(tc1_1, castom_div_3);
-//   tcase_add_test(tc1_1, castom_div_4);
-//   tcase_add_test(tc1_1, castom_div_5);
-//   tcase_add_test(tc1_1, castom_div_7);
-//   tcase_add_test(tc1_1, castom_div_8);
-//   tcase_add_test(tc1_1, castom_div_10);
-//   tcase_add_test(tc1_1, castom_mod_1);
-//   tcase_add_test(tc1_1, castom_mod_2);
-//   tcase_add_test(tc1_1, castom_mod_3);
-//   tcase_add_test(tc1_1, castom_mod_4);
-//   tcase_add_test(tc1_1, castom_mod_5);
-//   tcase_add_test(tc1_1, castom_mod_6);
-//   tcase_add_test(tc1_1, castom_mod_7);
-//   tcase_add_test(tc1_1, castom_mod_8);
-//   tcase_add_test(tc1_1, castom_mul_1);
-//   tcase_add_test(tc1_1, castom_mul_2);
-//   tcase_add_test(tc1_1, castom_mul_3);
-//   tcase_add_test(tc1_1, castom_mul_4);
-//   tcase_add_test(tc1_1, castom_mul_5);
-//   tcase_add_test(tc1_1, castom_mul_6);
-//   tcase_add_test(tc1_1, castom_mul_7);
-//   tcase_add_test(tc1_1, castom_mul_8);
-//   tcase_add_test(tc1_1, castom_mul_9);
-//   tcase_add_test(tc1_1, castom_mul_10);
-//   tcase_add_test(tc1_1, castom_mul_11);
-//   tcase_add_test(tc1_1, castom_mul_12);
-//   tcase_add_test(tc1_1, castom_mul_13);
-//   tcase_add_test(tc1_1, castom_mul_14);
-//   tcase_add_test(tc1_1, castom_mul_15);
-//   tcase_add_test(tc1_1, castom_mul_16);
-//   tcase_add_test(tc1_1, castom_mul_17);
-//   tcase_add_test(tc1_1, castom_mul_18);
-//   tcase_add_test(tc1_1, castom_mul_19);
-//   tcase_add_test(tc1_1, castom_mul_20);
-//   tcase_add_test(tc1_1, castom_mul_21);
-//   tcase_add_test(tc1_1, castom_mul_22);
-//   tcase_add_test(tc1_1, castom_mul_23);
-//   tcase_add_test(tc1_1, castom_mul_24);
-//   tcase_add_test(tc1_1, castom_mul_25);
-//   tcase_add_test(tc1_1, castom_mul_26);
-//   tcase_add_test(tc1_1, castom_mul_27);
-//   tcase_add_test(tc1_1, castom_mul_28);
-//   tcase_add_test(tc1_1, castom_mul_29);
-//   tcase_add_test(tc1_1, castom_mul_30);
-//   tcase_add_test(tc1_1, castom_mul_31);
-//   tcase_add_test(tc1_1, castom_mul_32);
-//   tcase_add_test(tc1_1, castom_mul_33);
-//   tcase_add_test(tc1_1, castom_mul_34);
-//   tcase_add_test(tc1_1, castom_mul_35);
-//   tcase_add_test(tc1_1, castom_mul_36);
-//   tcase_add_test(tc1_1, castom_mul_37);
-//   tcase_add_test(tc1_1, castom_mul_38);
-//   tcase_add_test(tc1_1, castom_mul_39);
-//   tcase_add_test(tc1_1, castom_mul_40);
-//   tcase_add_test(tc1_1, castom_mul_49);
-//   tcase_add_test(tc1_1, castom_mul_50);
-//   tcase_add_test(tc1_1, castom_mul_51);
-//   tcase_add_test(tc1_1, castom_round_1);
-//   tcase_add_test(tc1_1, castom_round_2);
-//   tcase_add_test(tc1_1, castom_round_3);
-//   tcase_add_test(tc1_1, castom_round_4);
-//   tcase_add_test(tc1_1, castom_round_5);
-//   tcase_add_test(tc1_1, castom_round_6);
-//   tcase_add_test(tc1_1, castom_round_7);
-//   tcase_add_test(tc1_1, castom_round_8);
-//   tcase_add_test(tc1_1, castom_round_9);
-//   tcase_add_test(tc1_1, castom_round_10);
-//   tcase_add_test(tc1_1, castom_round_11);
-//   tcase_add_test(tc1_1, castom_round_12);
-//   tcase_add_test(tc1_1, castom_round_13);
-//   tcase_add_test(tc1_1, castom_round_14);
-//   tcase_add_test(tc1_1, castom_round_15);
-//   tcase_add_test(tc1_1, castom_round_16);
-//   tcase_add_test(tc1_1, castom_round_17);
-//   tcase_add_test(tc1_1, castom_round_18);
-//   tcase_add_test(tc1_1, castom_round_19);
-//   tcase_add_test(tc1_1, castom_round_20);
-//   tcase_add_test(tc1_1, castom_round_21);
-//   tcase_add_test(tc1_1, castom_round_22);
-//   tcase_add_test(tc1_1, castom_round_23);
-//   tcase_add_test(tc1_1, castom_round_24);
-//   tcase_add_test(tc1_1, castom_floor_1);
-//   tcase_add_test(tc1_1, castom_floor_2);
-//   tcase_add_test(tc1_1, castom_floor_3);
-//   tcase_add_test(tc1_1, castom_floor_4);
-//   tcase_add_test(tc1_1, castom_floor_5);
-//   tcase_add_test(tc1_1, castom_floor_6);
-//   tcase_add_test(tc1_1, castom_floor_7);
-//   tcase_add_test(tc1_1, castom_floor_8);
-//   tcase_add_test(tc1_1, castom_floor_9);
-//   tcase_add_test(tc1_1, castom_floor_10);
-//   tcase_add_test(tc1_1, castom_floor_11);
-//   tcase_add_test(tc1_1, castom_floor_12);
-//   tcase_add_test(tc1_1, castom_floor_13);
-//   tcase_add_test(tc1_1, castom_floor_14);
-//   tcase_add_test(tc1_1, castom_floor_15);
-//   tcase_add_test(tc1_1, castom_floor_16);
-//   tcase_add_test(tc1_1, castom_floor_17);
-//   tcase_add_test(tc1_1, castom_floor_18);
-//   tcase_add_test(tc1_1, castom_floor_19);
-//   tcase_add_test(tc1_1, castom_floor_20);
-//   tcase_add_test(tc1_1, castom_floor_21);
-//   tcase_add_test(tc1_1, castom_floor_22);
-//   tcase_add_test(tc1_1, castom_floor_23);
-//   tcase_add_test(tc1_1, castom_floor_24);
-//   tcase_add_test(tc1_1, castom_sub_1);
-//   tcase_add_test(tc1_1, castom_sub_2);
-//   tcase_add_test(tc1_1, castom_sub_3);
-//   tcase_add_test(tc1_1, castom_sub_4);
-//   tcase_add_test(tc1_1, castom_sub_5);
-//   tcase_add_test(tc1_1, castom_sub_6);
-//   tcase_add_test(tc1_1, castom_sub_7);
-//   tcase_add_test(tc1_1, castom_sub_8);
-//   tcase_add_test(tc1_1, castom_sub_9);
-//   tcase_add_test(tc1_1, castom_sub_10);
-//   tcase_add_test(tc1_1, castom_sub_11);
-//   tcase_add_test(tc1_1, castom_sub_12);
-//   tcase_add_test(tc1_1, castom_sub_13);
-//   tcase_add_test(tc1_1, castom_sub_14);
-//   tcase_add_test(tc1_1, castom_sub_15);
-//   tcase_add_test(tc1_1, castom_sub_16);
-//   tcase_add_test(tc1_1, castom_sub_17);
-//   tcase_add_test(tc1_1, castom_sub_19);
-//   tcase_add_test(tc1_1, castom_sub_20);
-//   tcase_add_test(tc1_1, castom_sub_21);
-//   tcase_add_test(tc1_1, castom_sub_22);
-//   tcase_add_test(tc1_1, castom_sub_23);
-//   tcase_add_test(tc1_1, castom_sub_24);
-//   tcase_add_test(tc1_1, castom_sub_25);
-//   tcase_add_test(tc1_1, castom_sub_26);
-//   tcase_add_test(tc1_1, castom_sub_27);
-//   tcase_add_test(tc1_1, castom_sub_28);
-//   tcase_add_test(tc1_1, castom_sub_29);
-//   tcase_add_test(tc1_1, castom_sub_30);
-//   tcase_add_test(tc1_1, castom_sub_31);
-//   tcase_add_test(tc1_1, castom_sub_32);
-//   tcase_add_test(tc1_1, castom_sub_33);
-//   tcase_add_test(tc1_1, castom_sub_34);
-//   tcase_add_test(tc1_1, castom_sub_35);
-//   tcase_add_test(tc1_1, castom_sub_36);
-//   tcase_add_test(tc1_1, castom_sub_37);
-//   tcase_add_test(tc1_1, castom_sub_38);
-//   tcase_add_test(tc1_1, castom_sub_39);
-//   tcase_add_test(tc1_1, castom_sub_48);
-//   tcase_add_test(tc1_1, castom_sub_49);
-//   tcase_add_test(tc1_1, castom_sub_50);
-//   tcase_add_test(tc1_1, castom_sub_51);
-//   tcase_add_test(tc1_1, castom_sub_52);
-//   tcase_add_test(tc1_1, castom_sub_53);
-//   tcase_add_test(tc1_1, castom_negate_1);
-//   tcase_add_test(tc1_1, castom_negate_2);
-//   tcase_add_test(tc1_1, castom_negate_3);
-//   tcase_add_test(tc1_1, castom_negate_4);
-//   tcase_add_test(tc1_1, castom_negate_5);
-//   tcase_add_test(tc1_1, castom_negate_6);
-//   tcase_add_test(tc1_1, castom_negate_7);
-//   tcase_add_test(tc1_1, castom_negate_8);
-//   tcase_add_test(tc1_1, castom_negate_9);
-//   tcase_add_test(tc1_1, castom_negate_10);
-//   tcase_add_test(tc1_1, castom_negate_11);
-//   tcase_add_test(tc1_1, castom_negate_12);
-//   tcase_add_test(tc1_1, castom_negate_13);
-//   tcase_add_test(tc1_1, castom_negate_14);
-//   tcase_add_test(tc1_1, castom_negate_15);
-//   tcase_add_test(tc1_1, castom_negate_16);
-//   tcase_add_test(tc1_1, castom_negate_17);
-//   tcase_add_test(tc1_1, castom_negate_18);
-//   tcase_add_test(tc1_1, castom_negate_19);
-//   tcase_add_test(tc1_1, castom_negate_20);
-//   tcase_add_test(tc1_1, castom_negate_21);
-//   tcase_add_test(tc1_1, castom_negate_22);
-//   tcase_add_test(tc1_1, castom_negate_23);
-//   tcase_add_test(tc1_1, castom_negate_24);
-//   tcase_add_test(tc1_1, castom_negate_25);
-//   tcase_add_test(tc1_1, castom_negate_26);
-//   tcase_add_test(tc1_1, castom_negate_27);
-//   tcase_add_test(tc1_1, castom_negate_28);
-//   tcase_add_test(tc1_1, castom_negate_29);
-//   tcase_add_test(tc1_1, castom_negate_30);
-//   tcase_add_test(tc1_1, castom_negate_31);
-//   tcase_add_test(tc1_1, castom_negate_32);
-//   tcase_add_test(tc1_1, castom_negate_33);
-//   tcase_add_test(tc1_1, castom_negate_34);
-//   tcase_add_test(tc1_1, castom_negate_35);
-//   tcase_add_test(tc1_1, castom_negate_36);
-//   tcase_add_test(tc1_1, castom_negate_37);
-//   tcase_add_test(tc1_1, castom_negate_38);
-//   tcase_add_test(tc1_1, castom_negate_39);
-//   tcase_add_test(tc1_1, castom_negate_40);
-//   tcase_add_test(tc1_1, castom_negate_41);
-//   tcase_add_test(tc1_1, castom_negate_42);
-//   tcase_add_test(tc1_1, castom_truncate_1);
-//   tcase_add_test(tc1_1, castom_truncate_2);
-//   tcase_add_test(tc1_1, castom_truncate_3);
-//   tcase_add_test(tc1_1, castom_truncate_4);
-//   tcase_add_test(tc1_1, castom_truncate_5);
-//   tcase_add_test(tc1_1, castom_truncate_6);
-//   tcase_add_test(tc1_1, castom_truncate_7);
-//   tcase_add_test(tc1_1, castom_truncate_8);
-//   tcase_add_test(tc1_1, castom_truncate_9);
-//   tcase_add_test(tc1_1, castom_truncate_10);
-//   tcase_add_test(tc1_1, castom_truncate_11);
-//   tcase_add_test(tc1_1, castom_truncate_12);
-//   tcase_add_test(tc1_1, castom_truncate_13);
-//   tcase_add_test(tc1_1, castom_truncate_14);
-//   tcase_add_test(tc1_1, castom_truncate_15);
-//   tcase_add_test(tc1_1, castom_truncate_16);
-//   tcase_add_test(tc1_1, castom_truncate_17);
-//   tcase_add_test(tc1_1, castom_truncate_18);
-//   tcase_add_test(tc1_1, castom_truncate_19);
-//   tcase_add_test(tc1_1, castom_truncate_20);
-//   tcase_add_test(tc1_1, castom_truncate_21);
-//   tcase_add_test(tc1_1, castom_truncate_22);
-//   tcase_add_test(tc1_1, castom_truncate_23);
-//   tcase_add_test(tc1_1, castom_truncate_24);
-//   tcase_add_test(tc1_1, castom_truncate_25);
-//   tcase_add_test(tc1_1, castom_truncate_26);
-//   tcase_add_test(tc1_1, castom_truncate_27);
-//   tcase_add_test(tc1_1, castom_truncate_28);
-//   tcase_add_test(tc1_1, castom_truncate_29);
-//   tcase_add_test(tc1_1, castom_truncate_30);
-//   tcase_add_test(tc1_1, castom_truncate_31);
-//   tcase_add_test(tc1_1, castom_truncate_32);
-//   tcase_add_test(tc1_1, castom_truncate_33);
-//   tcase_add_test(tc1_1, castom_truncate_34);
-//   tcase_add_test(tc1_1, castom_truncate_35);
-//   tcase_add_test(tc1_1, castom_truncate_36);
-//   tcase_add_test(tc1_1, castom_truncate_37);
-//   tcase_add_test(tc1_1, castom_truncate_38);
-//   tcase_add_test(tc1_1, castom_truncate_39);
-//   tcase_add_test(tc1_1, castom_truncate_40);
-//   tcase_add_test(tc1_1, castom_truncate_41);
-//   tcase_add_test(tc1_1, castom_truncate_42);
-//   srunner_add_suite(sr, s1);
-// }
-
-// void srunner_add_cast_tests(SRunner *sr) {
-//   Suite *s1 = suite_create("Cast");
-//   TCase *tc1_1 = tcase_create("Cast");
-//   suite_add_tcase(s1, tc1_1);
-//   tcase_add_test(tc1_1, int_to_dec_1);
-//   tcase_add_test(tc1_1, int_to_dec_2);
-//   tcase_add_test(tc1_1, int_to_dec_3);
-//   tcase_add_test(tc1_1, int_to_dec_4);
-//   tcase_add_test(tc1_1, int_to_dec_5);
-//   tcase_add_test(tc1_1, int_to_dec_6);
-//   tcase_add_test(tc1_1, int_to_dec_7);
-//   tcase_add_test(tc1_1, int_to_dec_8);
-//   tcase_add_test(tc1_1, int_to_dec_9);
-//   tcase_add_test(tc1_1, int_to_dec_10);
-//   tcase_add_test(tc1_1, int_to_dec_11);
-//   tcase_add_test(tc1_1, int_to_dec_12);
-//   tcase_add_test(tc1_1, int_to_dec_13);
-//   tcase_add_test(tc1_1, int_to_dec_14);
-//   tcase_add_test(tc1_1, int_to_dec_15);
-//   tcase_add_test(tc1_1, int_to_dec_16);
-//   tcase_add_test(tc1_1, int_to_dec_17);
-//   tcase_add_test(tc1_1, int_to_dec_18);
-//   tcase_add_test(tc1_1, int_to_dec_19);
-//   tcase_add_test(tc1_1, int_to_dec_20);
-//   tcase_add_test(tc1_1, int_to_dec_21);
-//   tcase_add_test(tc1_1, dec_to_int_1);
-//   tcase_add_test(tc1_1, dec_to_int_2);
-//   tcase_add_test(tc1_1, dec_to_int_3);
-//   tcase_add_test(tc1_1, dec_to_int_4);
-//   tcase_add_test(tc1_1, dec_to_int_5);
-//   tcase_add_test(tc1_1, dec_to_int_7);
-//   tcase_add_test(tc1_1, dec_to_int_8);
-//   tcase_add_test(tc1_1, dec_to_int_9);
-//   tcase_add_test(tc1_1, dec_to_int_10);
-//   tcase_add_test(tc1_1, dec_to_int_11);
-//   tcase_add_test(tc1_1, dec_to_int_12);
-//   tcase_add_test(tc1_1, dec_to_int_13);
-//   tcase_add_test(tc1_1, dec_to_int_14);
-//   tcase_add_test(tc1_1, dec_to_int_15);
-//   tcase_add_test(tc1_1, dec_to_int_16);
-//   tcase_add_test(tc1_1, dec_to_int_17);
-//   tcase_add_test(tc1_1, dec_to_int_18);
-//   tcase_add_test(tc1_1, dec_to_int_19);
-//   tcase_add_test(tc1_1, dec_to_int_20);
-//   tcase_add_test(tc1_1, dec_to_int_21);
-//   tcase_add_test(tc1_1, dec_to_int_23);
-//   tcase_add_test(tc1_1, dec_to_int_24);
-//   tcase_add_test(tc1_1, dec_to_float_1);
-//   tcase_add_test(tc1_1, dec_to_float_2);
-//   tcase_add_test(tc1_1, dec_to_float_3);
-//   tcase_add_test(tc1_1, dec_to_float_4);
-//   tcase_add_test(tc1_1, dec_to_float_5);
-//   tcase_add_test(tc1_1, dec_to_float_6);
-//   tcase_add_test(tc1_1, dec_to_float_7);
-//   tcase_add_test(tc1_1, dec_to_float_8);
-//   tcase_add_test(tc1_1, dec_to_float_9);
-//   tcase_add_test(tc1_1, dec_to_float_10);
-//   tcase_add_test(tc1_1, dec_to_float_11);
-//   tcase_add_test(tc1_1, dec_to_float_12);
-//   tcase_add_test(tc1_1, dec_to_float_13);
-//   tcase_add_test(tc1_1, dec_to_float_14);
-//   tcase_add_test(tc1_1, dec_to_float_17);
-//   tcase_add_test(tc1_1, dec_to_float_18);
-//   tcase_add_test(tc1_1, dec_to_float_19);
-//   tcase_add_test(tc1_1, dec_to_float_20);
-//   tcase_add_test(tc1_1, dec_to_float_21);
-//   tcase_add_test(tc1_1, dec_to_float_22);
-//   tcase_add_test(tc1_1, dec_to_float_23);
-//   tcase_add_test(tc1_1, dec_to_float_24);
-//   tcase_add_test(tc1_1, dec_to_float_25);
-//   tcase_add_test(tc1_1, dec_to_float_26);
-//   tcase_add_test(tc1_1, dec_to_float_27);
-//   tcase_add_test(tc1_1, dec_to_float_28);
-//   tcase_add_test(tc1_1, dec_to_float_29);
-//   tcase_add_test(tc1_1, dec_to_float_31);
-//   tcase_add_test(tc1_1, dec_to_float_33);
-//   tcase_add_test(tc1_1, dec_to_float_34);
-//   tcase_add_test(tc1_1, dec_to_float_35);
-//   tcase_add_test(tc1_1, dec_to_float_36);
-//   tcase_add_test(tc1_1, castom_from_float_to_decimal_1);
-//   tcase_add_test(tc1_1, castom_from_float_to_decimal_2);
-//   tcase_add_test(tc1_1, castom_from_float_to_decimal_3);
-//   tcase_add_test(tc1_1, castom_from_float_to_decimal_4);
-//   tcase_add_test(tc1_1, castom_from_float_to_decimal_5);
-//   tcase_add_test(tc1_1, castom_from_float_to_decimal_6);
-//   tcase_add_test(tc1_1, castom_from_float_to_decimal_7);
-//   srunner_add_suite(sr, s1);
-// }
-
-// int main(void) {
-//   Suite *s = suite_create("Decimal tests");
-//   SRunner *sr = srunner_create(s);
-//   int nf;
-
-//   srunner_add_comparsion_tests(sr);
-//   srunner_add_arithmetic_tests(sr);
-//   srunner_add_cast_tests(sr);
-
-//   srunner_set_fork_status(sr, CK_NOFORK);
-//   srunner_run_all(sr, CK_ENV);
-//   nf = srunner_ntests_failed(sr);
-//   srunner_free(sr);
-
-//   return nf == 0 ? 0 : 1;
-// }

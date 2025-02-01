@@ -74,7 +74,7 @@ template <std::size_t bits> auto Decimal<bits>::operator%(const Decimal& other) 
 template <std::size_t bits> auto Decimal<bits>::operator+=(const Decimal& other) noexcept -> Decimal& {
   Decimal temp(other);
   normalize(temp);
-  this->m_mantissa = this->m_mantissa + temp.m_mantissa;
+  m_mantissa = m_mantissa + temp.m_mantissa;
   fit();
   return *this;
 }
@@ -82,14 +82,14 @@ template <std::size_t bits> auto Decimal<bits>::operator+=(const Decimal& other)
 template <std::size_t bits> auto Decimal<bits>::operator-=(const Decimal& other) noexcept -> Decimal& {
   Decimal temp(other);
   normalize(temp);
-  this->m_mantissa = this->m_mantissa - temp.m_mantissa;
+  m_mantissa = m_mantissa - temp.m_mantissa;
   fit();
   return *this;
 }
 
 template <std::size_t bits> auto Decimal<bits>::operator*=(const Decimal& other) noexcept -> Decimal& {
-  this->m_exponent = this->m_exponent + other.m_exponent;
-  this->m_mantissa = this->m_mantissa * other.m_mantissa;
+  m_exponent = m_exponent + other.m_exponent;
+  m_mantissa = m_mantissa * other.m_mantissa;
   fit();
   return *this;
 }
@@ -98,18 +98,17 @@ template <std::size_t bits> auto Decimal<bits>::operator/=(const Decimal& other)
   Decimal temp(other);
   normalize(temp);
 
-  bool negative = m_mantissa[m_bits - 1] ^ temp.m_mantissa[m_bits - 1];
-  if (m_mantissa[m_bits - 1]) m_mantissa = -m_mantissa;
-  if (temp.m_mantissa[m_bits - 1]) temp.m_mantissa = -temp.m_mantissa;
+  bool negative = sign() ^ temp.sign();
+  abs();
+  temp.abs();
 
-  std::bitset<m_bits> div = this->m_mantissa % temp.m_mantissa;
-  this->m_mantissa = this->m_mantissa / temp.m_mantissa;
+  std::bitset<m_bits> div = m_mantissa % temp.m_mantissa;
+  m_mantissa = m_mantissa / temp.m_mantissa;
 
-  this->m_exponent = {};
-  while (div.any() && m_exponent++ < m_max_exponent) {
-    this->m_mantissa = this->m_mantissa * std::bitset<m_bits>(0b1010);
+  for (m_exponent = {}; div.any() && m_exponent < m_max_exponent - 1; ++m_exponent) {
+    m_mantissa = m_mantissa * std::bitset<m_bits>(0b1010);
     div = div * std::bitset<m_bits>(0b1010);
-    this->m_mantissa = this->m_mantissa + div / temp.m_mantissa;
+    m_mantissa = m_mantissa + div / temp.m_mantissa;
     div = div % temp.m_mantissa;
   }
   fit();
@@ -121,9 +120,9 @@ template <std::size_t bits> auto Decimal<bits>::operator%=(const Decimal& other)
   Decimal temp(other);
   normalize(temp);
 
-  bool negative = m_mantissa[m_bits - 1];
-  if (m_mantissa[m_bits - 1]) m_mantissa = -m_mantissa;
-  if (temp.m_mantissa[m_bits - 1]) temp.m_mantissa = -temp.m_mantissa;
+  bool negative = this->sign();
+  this->abs();
+  temp.abs();
   m_mantissa = m_mantissa % temp.m_mantissa;
   fit();
   if (negative) m_mantissa = -m_mantissa;
@@ -315,6 +314,9 @@ template <std::size_t bits> auto operator/(std::bitset<bits> a, std::bitset<bits
   bool negative = a[bits - 1] ^ b[bits - 1];
   if (a[bits - 1]) a = -a;
   if (b[bits - 1]) b = -b;
+  if (a.none() || b.none()) {
+    return {};
+  }
 
   std::size_t bit{bits - 1};
   std::bitset<bits> rest, result;
@@ -331,6 +333,24 @@ template <std::size_t bits> auto operator/(std::bitset<bits> a, std::bitset<bits
 }
 
 template <std::size_t bits> auto operator%(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits> {
-  return a - (a / b) * b;
+  bool negative = a[bits - 1];
+  if (a[bits - 1]) a = -a;
+  if (b[bits - 1]) b = -b;
+  if (a.none() || b.none()) {
+    return {};
+  }
+
+  std::size_t bit{bits - 1};
+  std::bitset<bits> rest, result;
+  do {
+    rest <<= 1;
+    rest.set(0, a[bit]);
+    if (b <= rest) {
+      result.set(bit);
+      rest = rest - b;
+    }
+  } while (bit--);
+
+  return negative ? -rest : rest;
 }
 } // namespace utils::finantial
