@@ -29,8 +29,8 @@ template <std::size_t bits> auto operator-(std::bitset<bits> a) -> std::bitset<b
   return ~a + std::bitset<bits>(0b1);
 }
 
-template <std::size_t bits> auto operator-(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits> {
-  return a += (-b);
+template <std::size_t bits> auto operator-=(std::bitset<bits>& a, std::bitset<bits>& b) -> std::bitset<bits>& {
+  return a += -b;
 }
 
 template <std::size_t bits> auto operator*(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits> {
@@ -46,7 +46,7 @@ template <std::size_t bits> auto operator*(std::bitset<bits> a, std::bitset<bits
 }
 
 template <std::size_t bits> auto operator<(std::bitset<bits> a, std::bitset<bits> b) -> bool {
-  return (a - b)[bits - 1];
+  return (a -= b)[bits - 1];
 }
 
 template <std::size_t bits> auto operator<=(std::bitset<bits> a, std::bitset<bits> b) -> bool {
@@ -68,7 +68,7 @@ template <std::size_t bits> auto operator/(std::bitset<bits> a, std::bitset<bits
     rest.set(0, a[bit]);
     if (b <= rest) {
       result.set(bit);
-      rest = rest - b;
+      rest -= b;
     }
   } while (bit--);
 
@@ -93,7 +93,7 @@ template <std::size_t bits> auto operator%(std::bitset<bits> a, std::bitset<bits
     rest.set(0, a[bit]);
     if (b <= rest) {
       result.set(bit);
-      rest = rest - b;
+      rest -= b;
     }
   } while (bit--);
 
@@ -176,7 +176,7 @@ template <std::size_t bits> auto Decimal<bits>::operator+=(const Decimal& other)
 template <std::size_t bits> auto Decimal<bits>::operator-=(const Decimal& other) noexcept -> Decimal& {
   Decimal temp(other);
   normalize(temp);
-  m_mantissa = m_mantissa - temp.m_mantissa;
+  m_mantissa -= temp.m_mantissa;
   fit();
   return *this;
 }
