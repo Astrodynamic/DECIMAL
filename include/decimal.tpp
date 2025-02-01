@@ -251,12 +251,11 @@ template <std::size_t bits> auto Decimal<bits>::normalize(Decimal& other) -> voi
 }
 
 template <std::size_t bits> auto Decimal<bits>::fit() noexcept -> void {
-  bool negative = m_mantissa[m_bits - 1];
-  if (negative) m_mantissa = -m_mantissa;
-  for (std::size_t i = m_bits - 2; i <= m_bits / 2 && m_exponent; --i) {
-    if (m_mantissa[i]) {
+  bool negative = sign();
+  abs();
+  for (std::size_t i = m_bits - 2; (i >= m_bits / 2) && m_exponent; --i) {
+    if (m_mantissa[i] && m_exponent--) {
       m_mantissa = m_mantissa / std::bitset<m_bits>(0b1010);
-      --m_exponent;
     }
   }
   if (negative) m_mantissa = -m_mantissa;
@@ -266,6 +265,7 @@ template <std::size_t bits> auto Decimal<bits>::abs() noexcept -> Decimal<bits>&
   if (sign()) {
     m_mantissa = -m_mantissa;
   }
+  return *this;
 }
 
 template <std::size_t bits> auto operator<<(std::ostream& os, Decimal<bits> decimal) -> std::ostream& {
