@@ -149,7 +149,7 @@ template <std::size_t bits> Decimal<bits>::operator std::string() const noexcept
 
 template <std::size_t bits> auto Decimal<bits>::trunc() const noexcept -> Decimal {
   Decimal result(*this);
-  while (result.m_exponent > 0) {
+  while (result.m_exponent) {
     result.m_mantissa = result.m_mantissa / std::bitset<m_bits>(0b1010);
     --result.m_exponent;
   }
