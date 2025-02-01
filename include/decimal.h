@@ -55,6 +55,7 @@ private:
 
   static constexpr std::size_t m_bits = bits * 2 + 1;
   static constexpr std::size_t m_max_exponent = bits * 0.30102999566398119521373889472449 + 1;
+  static constexpr std::bitset<m_bits> m_bit_ten{0b1010};
 
   std::size_t m_exponent{};
   std::bitset<m_bits> m_mantissa{};
@@ -66,19 +67,6 @@ private:
   auto fit() noexcept -> void;
   auto abs() noexcept -> Decimal&;
 };
-
-template <std::size_t bits> auto operator<<(std::ostream& os, Decimal<bits> decimal) -> std::ostream&;
-
-template <std::size_t bits> auto operator<(std::bitset<bits> a, std::bitset<bits> b) -> bool;
-template <std::size_t bits> auto operator<=(std::bitset<bits> a, std::bitset<bits> b) -> bool;
-
-template <std::size_t bits> auto operator-(std::bitset<bits> a) -> std::bitset<bits>;
-template <std::size_t bits> auto operator+(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
-template <std::size_t bits> auto operator-(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
-template <std::size_t bits> auto operator*(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
-template <std::size_t bits> auto operator/(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
-template <std::size_t bits> auto operator%(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits>;
-
 } // namespace utils::finantial
 
 #include "decimal.tpp"
