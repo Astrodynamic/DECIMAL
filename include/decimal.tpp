@@ -162,7 +162,7 @@ template <std::size_t bits> auto Decimal<bits>::round() const noexcept -> Decima
 
 template <std::size_t bits> auto Decimal<bits>::floor() const noexcept -> Decimal {
   Decimal result(this->trunc());
-  if (result.sign() && this->m_exponent) {
+  if (this->sign() && this->m_exponent && *this != result) {
     result -= Decimal("1");
   }
   return result;
@@ -170,7 +170,7 @@ template <std::size_t bits> auto Decimal<bits>::floor() const noexcept -> Decima
 
 template <std::size_t bits> auto Decimal<bits>::ceil() const noexcept -> Decimal {
   Decimal result(this->trunc());
-  if (!result.sign() && this->m_exponent) {
+  if (!this->sign() && this->m_exponent && *this != result) {
     result += Decimal("1");
   }
   return result;
