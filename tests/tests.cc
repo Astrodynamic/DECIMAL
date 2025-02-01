@@ -70,6 +70,9 @@ TEST(Decimal, AssignmetsInvalidInput) {
 TEST(Decimal, CastToString) {
   Decimal a("-.00432234234");
   EXPECT_EQ(static_cast<std::string>(a), "-0.00432234234");
+
+  Decimal<32> b("4294967295.");
+  EXPECT_EQ(static_cast<std::string>(b), "+4294967295");
 }
 
 TEST(Decimal, ComparisonEqual_0) {
@@ -462,6 +465,11 @@ TEST(Decimal, OperatorAddAndAssign_13) {
 TEST(Decimal, OperatorAddAndAssign_14) {
   Decimal a = Decimal("-79228162514264337593543950335") += Decimal("+79228162514264337593543950335");
   EXPECT_EQ(static_cast<std::string>(a), "+0");
+}
+
+TEST(Decimal, OperatorAddAndAssign_15) {
+  Decimal<32> a = Decimal<32>("-79228.162514264337593543950335") += Decimal<32>("+0.79228162514264337593543950335");
+  EXPECT_EQ(static_cast<std::string>(a), "-79227.3702");
 }
 
 TEST(Decimal, OperatorSub_0) {

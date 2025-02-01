@@ -1,9 +1,6 @@
-#include "decimal.h"
-
 #include <algorithm>
 
 namespace utils::finantial {
-
 template <std::size_t bits> auto operator<<(std::ostream& os, Decimal<bits> decimal) -> std::ostream& {
   return os << static_cast<std::string>(decimal);
 }
