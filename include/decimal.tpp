@@ -1,9 +1,6 @@
 #include "decimal.h"
 
 #include <algorithm>
-#include <bitset>
-#include <cstddef>
-#include <string_view>
 
 namespace utils::finantial {
 

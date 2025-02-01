@@ -24,10 +24,10 @@ target_compile_options(
   ${PROJECT_NAME}
   PRIVATE
 
-  # -Wall
-  # -Werror
-  # -Wextra
-  # -Wpedantic
+  -Wall
+  -Werror
+  -Wextra
+  -Wpedantic
 )
 
 add_subdirectory(
