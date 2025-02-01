@@ -33,7 +33,7 @@ template <std::size_t bits> auto operator-=(std::bitset<bits>& a, std::bitset<bi
   return a += -b;
 }
 
-template <std::size_t bits> auto operator*=(std::bitset<bits>& a, std::bitset<bits> b) -> std::bitset<bits>& {
+template <std::size_t bits> auto operator*(std::bitset<bits> a, std::bitset<bits> b) -> std::bitset<bits> {
   std::bitset<bits> result, one(0b1);
   while (b.any()) {
     if ((b & one)[0]) {
@@ -42,7 +42,7 @@ template <std::size_t bits> auto operator*=(std::bitset<bits>& a, std::bitset<bi
     a <<= 1;
     b >>= 1;
   }
-  return a = result;
+  return result;
 }
 
 template <std::size_t bits> auto operator<(std::bitset<bits> a, std::bitset<bits> b) -> bool {
@@ -183,7 +183,7 @@ template <std::size_t bits> auto Decimal<bits>::operator-=(const Decimal& other)
 
 template <std::size_t bits> auto Decimal<bits>::operator*=(const Decimal& other) noexcept -> Decimal& {
   m_exponent += other.m_exponent;
-  m_mantissa *= other.m_mantissa;
+  m_mantissa = m_mantissa * other.m_mantissa;
   fit();
   return *this;
 }
@@ -200,8 +200,8 @@ template <std::size_t bits> auto Decimal<bits>::operator/=(const Decimal& other)
   m_mantissa = m_mantissa / temp.m_mantissa;
 
   for (m_exponent = {}; div.any() && m_exponent < m_max_exponent - 1; ++m_exponent) {
-    m_mantissa *= m_bit_ten;
-    div *= m_bit_ten;
+    m_mantissa = m_mantissa * m_bit_ten;
+    div = div * m_bit_ten;
     m_mantissa += div / temp.m_mantissa;
     div = div % temp.m_mantissa;
   }
@@ -316,12 +316,12 @@ template <std::size_t bits> auto Decimal<bits>::conversion(const std::cmatch& ma
 template <std::size_t bits> auto Decimal<bits>::normalize(Decimal& other) -> void {
   if (m_exponent > other.m_exponent) {
     for (std::size_t i{}; i < m_exponent - other.m_exponent; ++i) {
-      other.m_mantissa *= m_bit_ten;
+      other.m_mantissa = other.m_mantissa * m_bit_ten;
     }
     other.m_exponent = m_exponent;
   } else if (m_exponent < other.m_exponent) {
     for (std::size_t i{}; i < other.m_exponent - m_exponent; ++i) {
-      m_mantissa *= m_bit_ten;
+      m_mantissa = m_mantissa * m_bit_ten;
     }
     m_exponent = other.m_exponent;
   }
