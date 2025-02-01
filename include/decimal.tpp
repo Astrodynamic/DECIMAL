@@ -119,13 +119,8 @@ template <std::size_t bits> auto Decimal<bits>::operator/=(const Decimal& other)
 template <std::size_t bits> auto Decimal<bits>::operator%=(const Decimal& other) noexcept -> Decimal& {
   Decimal temp(other);
   normalize(temp);
-
-  bool negative = this->sign();
-  this->abs();
-  temp.abs();
   m_mantissa = m_mantissa % temp.m_mantissa;
   fit();
-  if (negative) m_mantissa = -m_mantissa;
   return *this;
 }
 
@@ -336,8 +331,11 @@ template <std::size_t bits> auto operator%(std::bitset<bits> a, std::bitset<bits
   bool negative = a[bits - 1];
   if (a[bits - 1]) a = -a;
   if (b[bits - 1]) b = -b;
-  if (a.none() || b.none()) {
-    return {};
+  if (a.none()) {
+    return a;
+  }
+  if (b.none()) {
+    return b;
   }
 
   std::size_t bit{bits - 1};

@@ -675,167 +675,50 @@ TEST(Decimal, OperatorMod_1) {
   EXPECT_EQ(static_cast<std::string>(a), "+0.21");
 }
 
+TEST(Decimal, OperatorMod_2) {
+  Decimal a = Decimal("-98765") % Decimal("1234");
+  EXPECT_EQ(static_cast<std::string>(a), "-45");
+}
+
+TEST(Decimal, OperatorMod_3) {
+  Decimal a = Decimal("30198") % Decimal("20210");
+  EXPECT_EQ(static_cast<std::string>(a), "+9988");
+}
+
+TEST(Decimal, OperatorMod_4) {
+  Decimal a = Decimal("9432747237234.43278947893292387944") % Decimal("0.0000000000004324234324234322");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.0000000000002373649422079110");
+}
+
+TEST(Decimal, OperatorMod_5) {
+  Decimal a = Decimal("21") % Decimal("0.0");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.0");
+}
+
+TEST(Decimal, OperatorMod_6) {
+  Decimal a = Decimal("5") % Decimal("5.0");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.0");
+}
+
+TEST(Decimal, OperatorMod_7) {
+  Decimal a = Decimal("3.5") % Decimal("3.0");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.5");
+}
+
+TEST(Decimal, OperatorModAndAssign_0) {
+  Decimal a = Decimal("3.5") %= Decimal("3.0");
+  EXPECT_EQ(static_cast<std::string>(a), "+0.5");
+}
+
+TEST(Decimal, OperatorModAndAssign_1) {
+  Decimal a = Decimal("-2.4363463") %= Decimal("2.0");
+  EXPECT_EQ(static_cast<std::string>(a), "-0.4363463");
+}
 
 
 
-// START_TEST(castom_mod_2) {
-//   castom_decimal src1, src2, res_mod;
-//   int a = -98765;
-//   int b = 1234;
-//   int res_origin = a % b;
-//   int res = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   castom_mod(src1, src2, &res_mod);
-//   castom_from_decimal_to_int(res_mod, &res);
-//   ck_assert_int_eq(res_origin, res);
-// }
-// END_TEST
-
-// START_TEST(castom_mod_3) {
-//   castom_decimal src1, src2, res_mod;
-//   int a = 30198;
-//   int b = 20210;
-//   int res_origin = a % b;
-//   int res = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   castom_mod(src1, src2, &res_mod);
-//   castom_from_decimal_to_int(res_mod, &res);
-//   ck_assert_int_eq(res_origin, res);
-// }
-// END_TEST
-
-// START_TEST(castom_mod_4) {
-//   castom_decimal src1, src2, res_mod;
-//   int a = -98765;
-//   int b = -1234;
-//   int res_origin = a % b;
-//   int res = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   castom_mod(src1, src2, &res_mod);
-//   castom_from_decimal_to_int(res_mod, &res);
-//   ck_assert_int_eq(res_origin, res);
-// }
-// END_TEST
-
-// START_TEST(castom_mod_5) {
-//   castom_decimal src1, src2, res_mod;
-//   int a = 98765;
-//   int b = 127234;
-//   int res_origin = a % b;
-//   int res = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   castom_mod(src1, src2, &res_mod);
-//   castom_from_decimal_to_int(res_mod, &res);
-//   ck_assert_int_eq(res_origin, res);
-// }
-// END_TEST
-
-// START_TEST(castom_mod_6) {
-//   castom_decimal src1, src2, res_mod;
-//   int a = 342576;
-//   int b = 1542134;
-//   int res_origin = a % b;
-//   int res = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   castom_mod(src1, src2, &res_mod);
-//   castom_from_decimal_to_int(res_mod, &res);
-//   ck_assert_int_eq(res_origin, res);
-// }
-// END_TEST
-
-// START_TEST(castom_mod_7) {
-//   castom_decimal src1, src2, res_mod;
-//   int a = 12;
-//   int b = 0;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_int_to_decimal(b, &src2);
-//   int check = castom_mod(src1, src2, &res_mod);
-//   ck_assert_int_eq(check, 3);
-// }
-// END_TEST
-
-// START_TEST(castom_mod_8) {
-//   castom_decimal src1, src2, res_mod;
-//   int a = 12;
-//   float b = 0.0000;
-//   castom_from_int_to_decimal(a, &src1);
-//   castom_from_float_to_decimal(b, &src2);
-//   int check = castom_mod(src1, src2, &res_mod);
-//   ck_assert_int_eq(check, 3);
-// }
-// END_TEST
 
 
-// START_TEST(castom_round_1) {
-//   castom_decimal src, origin, result;
-//   // src = 5.0;
-//   src.bits[0] = 0b00000000000000000000000000110010;
-//   src.bits[1] = 0b00000000000000000000000000000000;
-//   src.bits[2] = 0b00000000000000000000000000000000;
-//   src.bits[3] = 0b00000000000000010000000000000000;
-//   int check = castom_round(src, &result);
-//   int check_origin = 0;
-//   // origin = 5;
-//   origin.bits[0] = 0b00000000000000000000000000000101;
-//   origin.bits[1] = 0b00000000000000000000000000000000;
-//   origin.bits[2] = 0b00000000000000000000000000000000;
-//   origin.bits[3] = 0b00000000000000000000000000000000;
-//   ck_assert_int_eq(origin.bits[3], result.bits[3]);
-//   ck_assert_int_eq(origin.bits[2], result.bits[2]);
-//   ck_assert_int_eq(origin.bits[1], result.bits[1]);
-//   ck_assert_int_eq(origin.bits[0], result.bits[0]);
-//   ck_assert_int_eq(check, check_origin);
-// }
-// END_TEST
-
-// START_TEST(castom_round_2) {
-//   castom_decimal src, origin, result;
-//   // src = 3.4;
-//   src.bits[0] = 0b00000000000000000000000000100010;
-//   src.bits[1] = 0b00000000000000000000000000000000;
-//   src.bits[2] = 0b00000000000000000000000000000000;
-//   src.bits[3] = 0b00000000000000010000000000000000;
-//   int check = castom_round(src, &result);
-//   int check_origin = 0;
-//   // origin = 3;
-//   origin.bits[0] = 0b00000000000000000000000000000011;
-//   origin.bits[1] = 0b00000000000000000000000000000000;
-//   origin.bits[2] = 0b00000000000000000000000000000000;
-//   origin.bits[3] = 0b00000000000000000000000000000000;
-//   ck_assert_int_eq(origin.bits[3], result.bits[3]);
-//   ck_assert_int_eq(origin.bits[2], result.bits[2]);
-//   ck_assert_int_eq(origin.bits[1], result.bits[1]);
-//   ck_assert_int_eq(origin.bits[0], result.bits[0]);
-//   ck_assert_int_eq(check, check_origin);
-// }
-// END_TEST
-
-// START_TEST(castom_round_3) {
-//   castom_decimal src, origin, result;
-//   // src = 0.0;
-//   src.bits[0] = 0b00000000000000000000000000000000;
-//   src.bits[1] = 0b00000000000000000000000000000000;
-//   src.bits[2] = 0b00000000000000000000000000000000;
-//   src.bits[3] = 0b00000000000000010000000000000000;
-//   int check = castom_round(src, &result);
-//   int check_origin = 0;
-//   // origin = 0;
-//   origin.bits[0] = 0b00000000000000000000000000000000;
-//   origin.bits[1] = 0b00000000000000000000000000000000;
-//   origin.bits[2] = 0b00000000000000000000000000000000;
-//   origin.bits[3] = 0b00000000000000000000000000000000;
-//   ck_assert_int_eq(origin.bits[3], result.bits[3]);
-//   ck_assert_int_eq(origin.bits[2], result.bits[2]);
-//   ck_assert_int_eq(origin.bits[1], result.bits[1]);
-//   ck_assert_int_eq(origin.bits[0], result.bits[0]);
-//   ck_assert_int_eq(check, check_origin);
-// }
-// END_TEST
 
 // START_TEST(castom_round_4) {
 //   castom_decimal src, origin, result;
