@@ -90,6 +90,10 @@ public:
 } // namespace utils::finantial
 ```
 
+## Improving Algorithms  
+
+The library currently uses basic algorithms for computations. If you have experience with more efficient methods, especially those utilizing bitwise operations, you are welcome to contribute your improvements. This will not only enhance the library's performance but also help the author gain knowledge of these techniques.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

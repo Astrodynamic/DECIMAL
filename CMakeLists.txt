@@ -23,6 +23,10 @@ target_compile_features(${PROJECT_NAME}
 target_compile_options(
   ${PROJECT_NAME}
   PRIVATE
+  -O3
+  -Ofast
+  -march=native
+  -mtune=native
 
   -Wall
   -Werror
