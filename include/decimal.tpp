@@ -23,7 +23,7 @@ template <std::size_t bits> auto operator-(std::bitset<bits> a) -> std::bitset<b
   return ~a + std::bitset<bits>(0b1);
 }
 
-template <std::size_t bits> auto operator-=(std::bitset<bits>& a, std::bitset<bits>& b) -> std::bitset<bits>& {
+template <std::size_t bits> auto operator-=(std::bitset<bits>& a, std::bitset<bits> b) -> std::bitset<bits>& {
   return a += -b;
 }
 
@@ -228,31 +228,31 @@ template <std::size_t bits> Decimal<bits>::operator std::string() const noexcept
   return result;
 }
 
-template <std::size_t bits> auto Decimal<bits>::trunc() const noexcept -> Decimal {
+template <std::size_t bits> auto Decimal<bits>::trunc(std::size_t precision) const noexcept -> Decimal {
   Decimal result(*this);
-  while (result.m_exponent) {
+  while (result.m_exponent > precision) {
     result.m_mantissa = result.m_mantissa / m_bit_ten;
     --result.m_exponent;
   }
   return result;
 }
 
-template <std::size_t bits> auto Decimal<bits>::round() const noexcept -> Decimal {
-  return (*this + Decimal(sign() ? "-0.5" : "0.5")).trunc();
+template <std::size_t bits> auto Decimal<bits>::round(std::size_t precision) const noexcept -> Decimal {
+  return (*this + Decimal((sign() ? "-0." : "+0.") + std::string(std::min(m_max_exponent, precision), '0') + "5")).trunc(precision);
 }
 
-template <std::size_t bits> auto Decimal<bits>::floor() const noexcept -> Decimal {
-  Decimal result(this->trunc());
+template <std::size_t bits> auto Decimal<bits>::floor(std::size_t precision) const noexcept -> Decimal {
+  Decimal result(this->trunc(precision));
   if (this->sign() && this->m_exponent && *this != result) {
-    result -= Decimal("1");
+    result.m_mantissa -= m_bit_one;
   }
   return result;
 }
 
-template <std::size_t bits> auto Decimal<bits>::ceil() const noexcept -> Decimal {
-  Decimal result(this->trunc());
+template <std::size_t bits> auto Decimal<bits>::ceil(std::size_t precision) const noexcept -> Decimal {
+  Decimal result(this->trunc(precision));
   if (!this->sign() && this->m_exponent && *this != result) {
-    result += Decimal("1");
+    result.m_mantissa += m_bit_one;
   }
   return result;
 }

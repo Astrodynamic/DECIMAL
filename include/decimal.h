@@ -43,10 +43,10 @@ public:
 
   explicit operator std::string() const noexcept;
 
-  [[nodiscard]] auto trunc() const noexcept -> Decimal;
-  [[nodiscard]] auto round() const noexcept -> Decimal;
-  [[nodiscard]] auto floor() const noexcept -> Decimal;
-  [[nodiscard]] auto ceil() const noexcept -> Decimal;
+  [[nodiscard]] auto trunc(std::size_t precision = {}) const noexcept -> Decimal;
+  [[nodiscard]] auto round(std::size_t precision = {}) const noexcept -> Decimal;
+  [[nodiscard]] auto floor(std::size_t precision = {}) const noexcept -> Decimal;
+  [[nodiscard]] auto ceil(std::size_t precision = {}) const noexcept -> Decimal;
 
 private:
   static inline const std::regex m_mask{R"(^([+-]?)(?:0*)(\d*)(?:\.(\d*))?$)"};
